@@ -1,11 +1,11 @@
-name: "bioinformatics_stats"
+name: "tutorials"
 title: "Rich Lab for Molecular Health: Bioinformatics and Stats Tutorials"
 favicon: images/logo_richlab.png
-base_url: https://rich-molecular-health-lab.github.io/bioinformatics_stats
+base_url: https://rich-molecular-health-lab.github.io/tutorials
 description: |
   R markdown tutorials for Rich Lab bioinformatic workflows
 output_dir: "."
-exclude: ["archive/*", "logs/*"]
+exclude: ["archive/*"]
 
 navbar:
   title: "Rich Lab"
@@ -14,12 +14,22 @@ navbar:
     image: images/logo_richlab.png
     href: index.html
   right:
+    - text: "Rich Lab Website"
+      href: https://rich-molecular-health-lab.github.io
     - text: "Home"
       href: index.html
-    - text: "Tidy Metadata"
-      href: MetadataSetup.html
-    - text: "Raw 16S Results"
-      href: microbiome_new_data.html
+    - text: "Tutorials"
+      menu:
+        - text: "Sample Inventory"
+          href: SampleInventory.html
+        - text: "Tidy Metadata"
+          href: MetadataSetup.html
+        - text: "Tidy Microbiome Data"
+          href: microbiome_tidy_alignments.html
+        - text: "Microbiome Reference Sequences"
+          href: microbiome_references.html
+        - text: "16S Data Normalizing"
+          href: microbiome_normalize_abundance.html
 output:
   html_document:
     theme:

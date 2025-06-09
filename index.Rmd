@@ -37,7 +37,7 @@ This repository contains the scripts, tutorials, and templates for the Rich Lab'
 
 ##  [`MetadataSetup.html`](https://rich-molecular-health-lab.github.io/tutorials/MetadataSetup.html)
 
-- The purpose of a metadata file is to organize the potential independent or predictor variables for your analysis into a single table with one row per SampleID. Then, when you produce a set of potential dependent or outcome values, you organize those into a similar structure with the SampleIDs organized rowwise to streamline the process of matching predictor variables to outcome variables by SampleID.
+- The purpose of a metadata file is to organize the potential independent or predictor variables for your analysis into a single table with one row per `SampleID.` Then, when you produce a set of potential dependent or outcome values, you organize those into a similar structure with the `SampleIDs` organized rowwise to streamline the process of matching predictor variables to outcome variables by `SampleID.`
 
 - It's good practice to keep as much of your information in one tidy table as possible so that you can keep pulling from that source to further filter, wrangle and analyze without losing track of different versions and datasets over time. 
 
@@ -51,16 +51,11 @@ This repository contains the scripts, tutorials, and templates for the Rich Lab'
 2.  **All other files depend on your specific variables of interest**
    - *Mine mostly focus on diet trials and environmental context for the Pygmy Loris subjects*
    
-```{r}
-
-```
-
-   
 ### Files Produced
 
 1.  `samples_metadata.tsv` - This file gets carried forward on several other scripts in this repository to help you build consistent predictor variables across datasets.
 
-##  [`microbiome_new_data.html`](https://rich-molecular-health-lab.github.io/bioinformatics_stats/microbiome_new_data.html)
+##  [`microbiome_tidy_alignments.html`](https://rich-molecular-health-lab.github.io/tutorials/microbiome_tidy_alignments.html)
 
 - Follow this tutorial to take new raw read alignment data produced by Epi2ME Lab's `wf-16s` pipeline and convert it into fully formatted, tidy tables that you can normalize and analyze using `microeco` or a similar package.
 
@@ -74,12 +69,26 @@ This repository contains the scripts, tutorials, and templates for the Rich Lab'
   
 ### Files Produced
 
+1.  `taxonomy_table.tsv` - This table is required for `microeco` and several other metagenomic packages. It must contain exactly one row per taxon in your dataset.
+2.  `otu_table.tsv` - This table is required for `microeco` and several other metagenomic packages. It must contain exactly one row per taxon and one column per sample in your dataset. The numeric values represent the raw count of reads mapped to a given taxon within a given sample. We will want to normalize these before analyzing/interpreting them.
+3.  `sample_table.tsv` - This table is required for `microeco` and several other metagenomic packages. It must contain exactly one row per sample in your dataset. The columns contain metadata values that we may use as independent/predictor variables for interpreting our results.
+
+##  [`microbiome_references.html`](https://rich-molecular-health-lab.github.io/tutorials/microbiome_references.html)
+
+- Follow this tutorial to use the NCBI accessions available in the read alignments you created in the previous script and use those to fetch one representative sequence per OTU in your dataset and then build a phylogenetic tree to match.
+
+
+### Files Needed
+
+
+1.  `alignments.tsv` - *raw alignment data gathered from the wf-16s output and organized into one table in the previous script*
+
+
+### Files Produced
+
 1.  `representative_seqs.fasta` - This contains one GenBank reference sequence for each taxon in your dataset that we can use to substitute for ASVs used in many approaches designed for short read 16S data.
 2.  `representative_seqs_tax4fun.fasta` - This is the same as the previous file, except with different syntax to work with the `Tax4Fun2` package.
 3.   `tree.newick` - This is a phylogenetic tree produced from the previous fasta multiple sequence alignment.
-4.  `taxonomy_table.tsv` - This table is required for `microeco` and several other metagenomic packages. It must contain exactly one row per taxon in your dataset.
-5.  `otu_table.tsv` - This table is required for `microeco` and several other metagenomic packages. It must contain exactly one row per taxon and one column per sample in your dataset. The numeric values represent the raw count of reads mapped to a given taxon within a given sample. We will want to normalize these before analyzing/interpreting them.
-6.  `sample_table.tsv` - This table is required for `microeco` and several other metagenomic packages. It must contain exactly one row per sample in your dataset. The columns contain metadata values that we may use as independent/predictor variables for interpreting our results.
 
 # General Script Advice
 
