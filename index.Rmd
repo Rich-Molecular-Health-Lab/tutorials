@@ -35,7 +35,7 @@ This repository contains the scripts, tutorials, and templates for the Rich Lab'
 
 # Tutorial Options
 
-##  [`MetadataSetup.html`](https://rich-molecular-health-lab.github.io/tutorials/MetadataSetup.html)
+##  [`metadata_setup`](https://rich-molecular-health-lab.github.io/tutorials/metadata_setup.html)
 
 - The purpose of a metadata file is to organize the potential independent or predictor variables for your analysis into a single table with one row per `SampleID.` Then, when you produce a set of potential dependent or outcome values, you organize those into a similar structure with the `SampleIDs` organized rowwise to streamline the process of matching predictor variables to outcome variables by `SampleID.`
 
@@ -55,9 +55,9 @@ This repository contains the scripts, tutorials, and templates for the Rich Lab'
 
 1.  `samples_metadata.tsv` - This file gets carried forward on several other scripts in this repository to help you build consistent predictor variables across datasets.
 
-##  [`microbiome_tidy_alignments.html`](https://rich-molecular-health-lab.github.io/tutorials/microbiome_tidy_alignments.html)
+##  [`microbiome_alignments.html`](https://rich-molecular-health-lab.github.io/tutorials/microbiome_alignments.html)
 
-- Follow this tutorial to take new raw read alignment data produced by Epi2ME Lab's `wf-16s` pipeline and convert it into fully formatted, tidy tables that you can normalize and analyze using `microeco` or a similar package.
+- Follow this tutorial to take new raw read alignment data produced by Epi2ME Lab's `wf-16s` pipeline and convert it into fully formatted, tidy tables that you can normalize and analyze using `microeco`, `phyloseq` or a similar package.
 
 ### Files Needed
 
