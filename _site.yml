@@ -18,18 +18,42 @@ navbar:
       href: https://rich-molecular-health-lab.github.io
     - text: "Home"
       href: index.html
-    - text: "Tutorials"
+    - text: "Samples"
       menu:
         - text: "Sample Inventory"
-          href: SampleInventory.html
-        - text: "Tidy Metadata"
-          href: MetadataSetup.html
-        - text: "Tidy Microbiome Data"
-          href: microbiome_tidy_alignments.html
-        - text: "Microbiome Reference Sequences"
+          href: sample_inventory.html
+        - text: "Metadata"
+          href: metadata_setup.html
+    - text: "Reference Database"
+      menu:
+        - text: "Adaptive Sampling mtDNA"
+          href: AdaptiveSamplingDatabase_mtDNALoris.html
+    - text: "Read Processing"
+      menu:
+        - text: "Multiplex 16S"
+          href: readprocessing_multiplex_16s.html
+        - text: "Multiplex Adaptive Sampling"
+          href: 
+        - text: "Singleplex Adaptive Sampling"
+          href: 
+        - text: "Singleplex Whole Genome"
+          href: readprocessing_singleplex_wg.html
+    - text: "Microbiome Data"
+      menu:
+        - text: "Alignments"
+          href: microbiome_alignments.html
+        - text: "OTU References"
           href: microbiome_references.html
-        - text: "16S Data Normalizing"
+        - text: "Count Normalization"
           href: microbiome_normalize_abundance.html
+        - text: "Basic Metrics"
+          href: microbiome_basics.html
+    - text: "First Use"
+      menu:
+        - text: "HCC Remote Computing"
+          href: firstuse_hcc.html
+        - text: "Microeco R Package"
+          href: firstuse_microeco.html
 output:
   html_document:
     theme:

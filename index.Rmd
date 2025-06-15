@@ -47,7 +47,7 @@ This repository contains the scripts, tutorials, and templates for the Rich Lab'
 
 ### Files Needed
 
-1.  `compilation_loris.tsv` - *produced by the `SampleInventory.Rmd` script*
+1.  `compilation_loris.tsv` - [*produced by the `sample_inventory` script*](https://rich-molecular-health-lab.github.io/tutorials/sample_inventory.html)
 2.  **All other files depend on your specific variables of interest**
    - *Mine mostly focus on diet trials and environmental context for the Pygmy Loris subjects*
    
@@ -61,9 +61,9 @@ This repository contains the scripts, tutorials, and templates for the Rich Lab'
 
 ### Files Needed
 
-1.  `samples_metadata.tsv` - *produced by the `MetadataSetup.Rmd` script*
-2.  `*_abundance_table_species.tsv` - *produced by the `wf-16s` pipeline*
-3.  `*_wf-16s-report.html` - *produced by the `wf-16s` pipeline*
+1.  `samples_metadata.tsv` - [*produced by the `metadata_setup` script*](https://rich-molecular-health-lab.github.io/tutorials/metadata_setup.html)
+2.  `*_abundance_table_species.tsv` - [*produced by the `wf-16s` pipeline in `readprocessing_multiplex_16s`*](https://rich-molecular-health-lab.github.io/tutorials/readprocessing_multiplex_16s.html)
+3.  `*_wf-16s-report.html` - [*produced by the `wf-16s` pipeline in `readprocessing_multiplex_16s`*](https://rich-molecular-health-lab.github.io/tutorials/readprocessing_multiplex_16s.html)
 
   - The tutorial provides instructions and code to download one `.csv` file per demultiplexed sample from this `.html` file for a given sequencing run and merge those into a table with raw alignment data
   
@@ -77,24 +77,41 @@ This repository contains the scripts, tutorials, and templates for the Rich Lab'
 
 - Follow this tutorial to use the NCBI accessions available in the read alignments you created in the previous script and use those to fetch one representative sequence per OTU in your dataset and then build a phylogenetic tree to match.
 
-
 ### Files Needed
 
-
-1.  `alignments.tsv` - *raw alignment data gathered from the wf-16s output and organized into one table in the previous script*
-
+1.  `alignments.tsv` - *raw alignment data gathered from the wf-16s output and organized into one table in the [previous `microbiome_alignments` script*](https://rich-molecular-health-lab.github.io/tutorials/microbiome_alignments.html)
 
 ### Files Produced
 
-1.  `representative_seqs.fasta` - This contains one GenBank reference sequence for each taxon in your dataset that we can use to substitute for ASVs used in many approaches designed for short read 16S data.
-2.  `representative_seqs_tax4fun.fasta` - This is the same as the previous file, except with different syntax to work with the `Tax4Fun2` package.
-3.   `tree.newick` - This is a phylogenetic tree produced from the previous fasta multiple sequence alignment.
+1.  `refs_aligned_mafft.fasta` - This contains one GenBank reference sequence for each taxon in your dataset that we can use to substitute for ASVs used in many approaches designed for short read 16S data.
+2.   `refs_tree.treefile` - This is a phylogenetic tree produced from the previous fasta multiple sequence alignment.
+
+## [`microbiome_preprocess.html`](https://rich-molecular-health-lab.github.io/tutorialsmicrobiome_preprocess.html)
+
+- Follow this tutorial to construct, filter, and clean a microbiome dataset that will finally be ready for use in calculating basic summary stats/metrics.
+  - *Keep in mind that the OTU table still stores count data, not normalized abundance or diversity values.*
+
+### Files Needed
+
+1.  `refs_aligned_mafft.fasta` - This contains one GenBank reference sequence for each taxon in your dataset that we can use to substitute for ASVs used in many approaches designed for short read 16S data.
+2.   `refs_tree.treefile` - This is a phylogenetic tree produced from the previous fasta multiple sequence alignment.
+
+### Files Produced
+
+1.  `phyloseq_genus.RData` - Microbiome dataset stored as a phylo object with counts summed and trees collapsed to the Genus level.
+
+  - *Note that the script also contains code to replicate this and all other files at higher taxonomic levels (Family, Order, Class, Phylum)*
+  
+2.  `tree_genus.RData` - Only the phylogenetic tree stored in the phylo object.
+
+3.  `phyloseq_melt_genus.RData` - Long `tibble` version of the phylo object dataset.
+
 
 # General Script Advice
 
 ## On Your First-Use of a Workflow
 
-I created a secondary repository called [`workflows_first_use`](https://github.com/Rich-Molecular-Health-Lab/workflows_first_use). This is where I will store some scripts/tutorials with specific instructions for setting up your working directory and environment for specialized packages (especially for `microeco`).
+I created a secondary repository called [`workflows_first_use`](https://github.com/Rich-Molecular-Health-Lab/workflows_first_use). This is where I will store some scripts/tutorials with specific instructions for setting up your working directory and environment for specialized packages (especially for `microeco`). You can find the tutorial version of those scripts under the *First Use* option in the menu bar above.
 
 ## `params` option in the R Markdown Header
 
