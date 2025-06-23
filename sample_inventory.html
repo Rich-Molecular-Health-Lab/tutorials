@@ -11,6 +11,7 @@
 
 <meta name="author" content="Alicia Rich" />
 
+<meta name="date" content="2025-06-22" />
 
 <title>Sample Inventory</title>
 
@@ -1516,6 +1517,96 @@ window.buildTabsets = function(tocID) {
   });
 };
 
+</script>
+<script>
+window.initializeCodeFolding = function(show) {
+
+  // handlers for show-all and hide all
+  $("#rmd-show-all-code").click(function() {
+    $('div.r-code-collapse').each(function() {
+      $(this).collapse('show');
+    });
+  });
+  $("#rmd-hide-all-code").click(function() {
+    $('div.r-code-collapse').each(function() {
+      $(this).collapse('hide');
+    });
+  });
+
+  // index for unique code element ids
+  var currentIndex = 1;
+
+  // select all R code blocks
+  var rCodeBlocks = $('pre.r, pre.python, pre.bash, pre.sql, pre.cpp, pre.stan, pre.julia, pre.foldable');
+  rCodeBlocks.each(function() {
+    // skip if the block has fold-none class
+    if ($(this).hasClass('fold-none')) return;
+
+    // create a collapsable div to wrap the code in
+    var div = $('<div class="collapse r-code-collapse"></div>');
+    var showThis = (show || $(this).hasClass('fold-show')) && !$(this).hasClass('fold-hide');
+    var id = 'rcode-643E0F36' + currentIndex++;
+    div.attr('id', id);
+    $(this).before(div);
+    $(this).detach().appendTo(div);
+
+    // add a show code button right above
+    var showCodeText = $('<span>' + (showThis ? 'Hide' : 'Show') + '</span>');
+    var showCodeButton = $('<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm code-folding-btn pull-right float-right"></button>');
+    showCodeButton.append(showCodeText);
+    showCodeButton
+        .attr('data-toggle', 'collapse')
+        .attr('data-bs-toggle', 'collapse') // BS5
+        .attr('data-target', '#' + id)
+        .attr('data-bs-target', '#' + id)   // BS5
+        .attr('aria-expanded', showThis)
+        .attr('aria-controls', id);
+
+    var buttonRow = $('<div class="row"></div>');
+    var buttonCol = $('<div class="col-md-12"></div>');
+
+    buttonCol.append(showCodeButton);
+    buttonRow.append(buttonCol);
+
+    div.before(buttonRow);
+
+    // show the div if necessary
+    if (showThis) div.collapse('show');
+
+    // update state of button on show/hide
+    //   * Change text
+    //   * add a class for intermediate states styling
+    div.on('hide.bs.collapse', function () {
+      showCodeText.text('Show');
+      showCodeButton.addClass('btn-collapsing');
+    });
+    div.on('hidden.bs.collapse', function () {
+      showCodeButton.removeClass('btn-collapsing');
+    });
+    div.on('show.bs.collapse', function () {
+      showCodeText.text('Hide');
+      showCodeButton.addClass('btn-expanding');
+    });
+    div.on('shown.bs.collapse', function () {
+      showCodeButton.removeClass('btn-expanding');
+    });
+
+  });
+
+}
+</script>
+<script>
+window.initializeSourceEmbed = function(filename) {
+  $("#rmd-download-source").click(function() {
+    var src = $("#rmd-source-code").html();
+    var a = document.createElement('a');
+    a.href = "data:text/x-r-markdown;base64," + src;
+    a.download = filename;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+  });
+};
 </script>
 <style type="text/css">.hljs-literal {
 color: #990073;
@@ -3190,6 +3281,11 @@ if (window.hljs) {
 
 
 
+<style type="text/css">
+#rmd-source-code {
+display: none;
+}
+</style>
 
 
 
@@ -3270,6 +3366,9 @@ display: none;
 </style>
 
 <!-- code folding -->
+<style type="text/css">
+.code-folding-btn { margin-bottom: 4px; }
+</style>
 
 
 
@@ -3347,10 +3446,18 @@ border-radius: 0px;
 
 <div id="header">
 
+<div class="btn-group pull-right float-right">
+<button type="button" class="btn btn-default btn-xs btn-secondary btn-sm dropdown-toggle" data-toggle="dropdown" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><span>Code</span> <span class="caret"></span></button>
+<ul class="dropdown-menu dropdown-menu-right" style="min-width: 50px;">
+<li><a id="rmd-download-source" href="#">Download Rmd</a></li>
+</ul>
+</div>
+
 
 
 <h1 class="title toc-ignore">Sample Inventory</h1>
 <h4 class="author">Alicia Rich</h4>
+<h4 class="date">2025-06-22</h4>
 
 </div>
 
@@ -3370,15 +3477,15 @@ sequencing run). Those files and their list of column headers to be used
 are as follows (note: it is fine to have extra columns, but you must at
 least have these to run the script as is):</p>
 <div class="container-fluid">
-<div id="bslib-accordion-7832" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
+<div id="bslib-accordion-4830" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
 <div class="accordion-item" data-value="Show/Hide File List">
 <div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-7381" aria-expanded="false" aria-controls="bslib-accordion-panel-7381">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-8089" aria-expanded="false" aria-controls="bslib-accordion-panel-8089">
 <div class="accordion-icon"></div>
 <div class="accordion-title">Show/Hide File List</div>
 </button>
 </div>
-<div id="bslib-accordion-panel-7381" class="accordion-collapse collapse">
+<div id="bslib-accordion-panel-8089" class="accordion-collapse collapse">
 <div class="accordion-body">
 <ol>
 <li>Libraries</li>
@@ -3442,485 +3549,12 @@ script to select which sampleset you will be working with. So long as
 the same name is used consistently, this should automatically filter for
 that name (e.g., loris or marmoset).</p>
 </div>
-<div id="file-paths" class="section level3">
-<h3>File Paths</h3>
-<p>Next, you should make sure your config.yml file contains the path to
-locate each of the files you will be using. Below is an example excerpt
-from my config file.</p>
-<div class="container-fluid">
-<div id="bslib-accordion-5630" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
-<div class="accordion-item" data-value="Show/Hide External File">
-<div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-7827" aria-expanded="false" aria-controls="bslib-accordion-panel-7827">
-<div class="accordion-icon"></div>
-<div class="accordion-title">Show/Hide External File</div>
-</button>
-</div>
-<div id="bslib-accordion-panel-7827" class="accordion-collapse collapse">
-<div class="accordion-body">
-<pre>default:
-  setup: &quot;setup/setup.R&quot;
-  conflicts: &quot;setup/conflicts.R&quot;
-  functions: &quot;setup/functions.R&quot;
-  packages: &quot;setup/packages.R&quot;
-  inputs: &quot;setup/inputs.R&quot;
-  knit_engines: &quot;setup/knit_engines.R&quot;
-  fonts: &quot;setup/fonts/FA6_Free-Solid-900.otf&quot;
-  tmp_tsv: &quot;tmp/tmp_table.tsv&quot;
-  tmp_downloads: &quot;tmp/downloads/&quot;
-  tmp_fetch: &quot;tmp/fetch_references.txt&quot;
-  tmp_fasta3: &quot;tmp/tmp3.fasta&quot;
-  tmp_fasta4: &quot;tmp/tmp4.fasta&quot;
-  
-scripts:
-  local:
-    basecall: &quot;batch_scripts/basecall_local.sh&quot;
-    trimWG: &quot;batch_scripts/trimWG_local.sh&quot;
-  
-isolates:
-  samplesets: &quot;salci&quot; 
-  minQC: 10
-
-bats:
-  inventories:
-    all_stages: &quot;samples/inventories/bats/compilation_bats.tsv&quot;
-    collection: &quot;samples/inventories/bats/samples_bats.csv&quot;
-    extraction: &quot;samples/inventories/bats/extracts_bats.csv&quot;
-    libraries: &quot;samples/inventories/bats/libraries_bats.csv&quot;
-    seqruns: &quot;samples/inventories/bats/seqruns_bats.csv&quot;
-
-loris:
-  day1: &quot;2023-10-26&quot;
-  last: &quot;2024-10-25&quot;
-  sequencing:
-    coverage: &quot;visuals/loris_depth_summary.html&quot;
-    depth_plot: &quot;visuals/loris_depth_hist.html&quot;
-  metadata: 
-    scripts: !expr list(&quot;metadata/loris/colors.R&quot;, &quot;metadata/loris/metadata_key.R&quot;, &quot;metadata/loris/nutrition.R&quot;, &quot;metadata/loris/hdz_loris_log.R&quot;, &quot;metadata/loris/diet_tables.R&quot;)
-    bristol: &quot;metadata/loris/bristols.tsv&quot;
-    studbook: &quot;metadata/loris/subjects_loris.csv&quot;
-    summary: &quot;metadata/loris/samples_metadata.tsv&quot;
-    key: &quot;metadata/loris/metadata_key.R&quot;
-    factors: &quot;metadata/loris/factors.R&quot;
-    foods: &quot;metadata/loris/foods.tsv&quot;
-    proteins: &quot;metadata/loris/proteins.tsv&quot;
-    fats: &quot;metadata/loris/fats.tsv&quot;
-    CHOs: &quot;metadata/loris/CHOs.tsv&quot;
-    Ash: &quot;metadata/loris/Ash.tsv&quot;
-    vitamins: &quot;metadata/loris/vitamins.tsv&quot;
-    reactable: &quot;metadata/loris/loris_metadata_summary.html&quot;
-    sample_table: 
-      identifiers: &quot;metadata/loris/identifier_key.tsv&quot;
-      main: &quot;metadata/loris/sample_table.tsv&quot;
-      merged: &quot;metadata/loris/sample_table_merged.tsv&quot;
-  inventories:
-    all_stages: &quot;samples/inventories/loris/compilation_loris.tsv&quot;
-    collection: &quot;samples/inventories/loris/samples_loris.csv&quot;
-    extraction: &quot;samples/inventories/loris/extracts_loris.csv&quot;
-    libraries: &quot;samples/inventories/loris/libraries_loris.csv&quot;
-    seqruns: &quot;samples/inventories/loris/seqruns_loris.csv&quot;
-  outputs_wf16s: &quot;data/loris/outputs_wf16s/&quot;
-  barcodes_output: &quot;dataframes/barcodes/loris/&quot;
-  read_alignments: &quot;data/loris/read_alignments&quot;
-  taxa_reps:
-    aligned: &quot;data/loris/taxonomy/refseqs_aligned.fasta&quot;
-    tree: &quot;data/loris/taxonomy/refseqs_tree.newick&quot;
-    table: &quot;data/loris/taxonomy/tax_table.tsv&quot;
-  abundance_wf16s: &quot;data/loris/wf16s_abundance/&quot;
-  microeco: 
-    dataset:
-      main:
-        keg: &quot;microeco/loris/datasets/main/keg&quot;
-        njc: &quot;microeco/loris/datasets/main/njc&quot;
-        fpt: &quot;microeco/loris/datasets/main/fpt&quot;
-        tax: &quot;microeco/loris/datasets/main&quot;
-      culi:
-        keg: &quot;microeco/loris/datasets/culi/keg&quot;
-        njc: &quot;microeco/loris/datasets/culi/njc&quot;
-        fpt: &quot;microeco/loris/datasets/culi/fpt&quot;
-        tax: &quot;microeco/loris/datasets/culi&quot;
-      warb:
-        keg: &quot;microeco/loris/datasets/warble/keg&quot;
-        njc: &quot;microeco/loris/datasets/warble/njc&quot;
-        fpt: &quot;microeco/loris/datasets/warble/fpt&quot;
-        tax: &quot;microeco/loris/datasets/warble&quot;
-    abund:
-      main:
-        keg: &quot;microeco/loris/abundance/main/keg&quot;
-        fpt: &quot;microeco/loris/abundance/main/fpt&quot;
-        njc: &quot;microeco/loris/abundance/main/njc&quot;
-        tax: &quot;microeco/loris/abundance/main&quot;
-      culi:
-        keg: &quot;microeco/loris/abundance/culi/keg&quot;
-        fpt: &quot;microeco/loris/abundance/culi/fpt&quot;
-        njc: &quot;microeco/loris/abundance/culi/njc&quot;
-        tax: &quot;microeco/loris/abundance/culi&quot;
-      warb:
-        keg: &quot;microeco/loris/abundance/warble/keg&quot;
-        fpt: &quot;microeco/loris/abundance/warble/fpt&quot;
-        njc: &quot;microeco/loris/abundance/warble/njc&quot;
-        tax: &quot;microeco/loris/abundance/warble&quot;
-    alpha:
-      main: &quot;microeco/loris/alphadiversity/main&quot;
-      culi: &quot;microeco/loris/alphadiversity/culi&quot;
-      warb: &quot;microeco/loris/alphadiversity/warble&quot;
-    beta:
-      main:
-        kegg: &quot;microeco/loris/betadiversity/main/keg&quot;
-        fpt: &quot;microeco/loris/betadiversity/main/fpt&quot;
-        njc: &quot;microeco/loris/betadiversity/main/njc&quot;
-        tax: &quot;microeco/loris/betadiversity/main&quot;
-      culi:
-        kegg: &quot;microeco/loris/betadiversity/culi/keg&quot;
-        fpt:  &quot;microeco/loris/betadiversity/culi/fpt&quot;
-        njc:  &quot;microeco/loris/betadiversity/culi/njc&quot;
-        tax: &quot;microeco/loris/betadiversity/culi&quot;
-      warb:
-        kegg: &quot;microeco/loris/betadiversity/warble/keg&quot;
-        fpt:  &quot;microeco/loris/betadiversity/warble/fpt&quot;
-        njc:  &quot;microeco/loris/betadiversity/warble/njc&quot;
-        tax: &quot;microeco/loris/betadiversity/warble&quot;
-    data:
-      main:
-        feature: &quot;microeco/loris/datasets/main/feature_table.tsv&quot;
-        tree:    &quot;microeco/loris/datasets/main/phylo_tree.tre&quot;
-        fasta:   &quot;microeco/loris/datasets/main/rep_fasta.fasta&quot;
-        samples: &quot;microeco/loris/datasets/main/sample_table.tsv&quot;
-        taxa:    &quot;microeco/loris/datasets/main/tax_table.tsv&quot;
-      culi: 
-        feature: &quot;microeco/loris/datasets/culi/feature_table.tsv&quot;
-        tree:    &quot;microeco/loris/datasets/culi/phylo_tree.tre&quot;
-        fasta:   &quot;microeco/loris/datasets/culi/rep_fasta.fasta&quot;
-        samples: &quot;microeco/loris/datasets/culi/sample_table.tsv&quot;
-        taxa:    &quot;microeco/loris/datasets/culi/tax_table.tsv&quot;
-      warb:
-        feature: &quot;microeco/loris/datasets/warb/feature_table.tsv&quot;
-        tree:    &quot;microeco/loris/datasets/warb/phylo_tree.tre&quot;
-        fasta:   &quot;microeco/loris/datasets/warb/rep_fasta.fasta&quot;
-        samples: &quot;microeco/loris/datasets/warb/sample_table.tsv&quot;
-        taxa:    &quot;microeco/loris/datasets/warb/tax_table.tsv&quot;
-
-
-sample_sheets:
-  compilations:
-    bats:    &quot;samples/sample_sheets/bats/nwr_combined_sample_sheet.csv&quot;
-    loris:    &quot;samples/sample_sheets/loris/hdz_combined_sample_sheet.csv&quot;
-  nwr1: &quot;samples/sample_sheets/bats/nwr1_sample_sheet.csv&quot;
-  hdz1:  &quot;samples/sample_sheets/loris/hdz1_sample_sheet.csv&quot;
-  hdz2:  &quot;samples/sample_sheets/loris/hdz2_sample_sheet.csv&quot;
-  hdz3:  &quot;samples/sample_sheets/loris/hdz3_sample_sheet.csv&quot;
-  hdz4:  &quot;samples/sample_sheets/loris/hdz4_sample_sheet.csv&quot;
-  hdz5:  &quot;samples/sample_sheets/loris/hdz5_sample_sheet.csv&quot;
-  hdz6:  &quot;samples/sample_sheets/loris/hdz6_sample_sheet.csv&quot;
-  hdz7:  &quot;samples/sample_sheets/loris/hdz7_sample_sheet.csv&quot;
-  hdz8:  &quot;samples/sample_sheets/loris/hdz8_sample_sheet.csv&quot;
-  hdz9:  &quot;samples/sample_sheets/loris/hdz9_sample_sheet.csv&quot;
-  hdz10: &quot;samples/sample_sheets/loris/hdz10_sample_sheet.csv&quot;
-  hdz11: &quot;samples/sample_sheets/loris/hdz11_sample_sheet.csv&quot;
-  hdz12: &quot;samples/sample_sheets/loris/hdz12_sample_sheet.csv&quot;
-  hdz13: &quot;samples/sample_sheets/loris/hdz13_sample_sheet.csv&quot;
-  hdz14: &quot;samples/sample_sheets/loris/hdz14_sample_sheet.csv&quot;
-  hdz15: &quot;samples/sample_sheets/loris/hdz15_sample_sheet.csv&quot;
-  hdz16: &quot;samples/sample_sheets/loris/hdz16_sample_sheet.csv&quot;
-  hdz17: &quot;samples/sample_sheets/loris/hdz17_sample_sheet.csv&quot;
-  hdz18: &quot;samples/sample_sheets/loris/hdz18_sample_sheet.csv&quot;
-
-barcode_alignments:
-  compilations:
-    loris:    &quot;samples/barcode_alignments/loris/hdz_combined_barcode_alignment.tsv&quot;
-    bats:    &quot;samples/barcode_alignments/bats/nwr_combined_barcode_alignment.tsv&quot;
-  nwr1: &quot;samples/barcode_alignments/bats/nwr1_barcode_alignment.tsv&quot;
-  hdz1:  &quot;samples/barcode_alignments/loris/hdz1_barcode_alignment.tsv&quot;
-  hdz2:  &quot;samples/barcode_alignments/loris/hdz2_barcode_alignment.tsv&quot;
-  hdz3:  &quot;samples/barcode_alignments/loris/hdz3_barcode_alignment.tsv&quot;
-  hdz4:  &quot;samples/barcode_alignments/loris/hdz4_barcode_alignment.tsv&quot;
-  hdz5:  &quot;samples/barcode_alignments/loris/hdz5_barcode_alignment.tsv&quot;
-  hdz6:  &quot;samples/barcode_alignments/loris/hdz6_barcode_alignment.tsv&quot;
-  hdz7:  &quot;samples/barcode_alignments/loris/hdz7_barcode_alignment.tsv&quot;
-  hdz8:  &quot;samples/barcode_alignments/loris/hdz8_barcode_alignment.tsv&quot;
-  hdz9:  &quot;samples/barcode_alignments/loris/hdz9_barcode_alignment.tsv&quot;
-  hdz10: &quot;samples/barcode_alignments/loris/hdz10_barcode_alignment.tsv&quot;
-  hdz11: &quot;samples/barcode_alignments/loris/hdz11_barcode_alignment.tsv&quot;
-  hdz12: &quot;samples/barcode_alignments/loris/hdz12_barcode_alignment.tsv&quot;
-  hdz13: &quot;samples/barcode_alignments/loris/hdz13_barcode_alignment.tsv&quot;
-  hdz14: &quot;samples/barcode_alignments/loris/hdz14_barcode_alignment.tsv&quot;
-  hdz15: &quot;samples/barcode_alignments/loris/hdz15_barcode_alignment.tsv&quot;
-  hdz16: &quot;samples/barcode_alignments/loris/hdz16_barcode_alignment.tsv&quot;
-  hdz17: &quot;samples/barcode_alignments/loris/hdz17_barcode_alignment.tsv&quot;
-  hdz18: &quot;samples/barcode_alignments/loris/hdz18_barcode_alignment.tsv&quot;
-
-abund_wf16s_files:
-  hdz1:  &quot;data/loris/wf16s_abundance/hdz1_abundance_table_species.tsv&quot;
-  hdz2:  &quot;data/loris/wf16s_abundance/hdz2_abundance_table_species.tsv&quot;
-  hdz3:  &quot;data/loris/wf16s_abundance/hdz3_abundance_table_species.tsv&quot;
-  hdz4:  &quot;data/loris/wf16s_abundance/hdz4_abundance_table_species.tsv&quot;
-  hdz5:  &quot;data/loris/wf16s_abundance/hdz5_abundance_table_species.tsv&quot;
-  hdz6:  &quot;data/loris/wf16s_abundance/hdz6_abundance_table_species.tsv&quot;
-  hdz7:  &quot;data/loris/wf16s_abundance/hdz7_abundance_table_species.tsv&quot;
-  hdz8:  &quot;data/loris/wf16s_abundance/hdz8_abundance_table_species.tsv&quot;
-  hdz9:  &quot;data/loris/wf16s_abundance/hdz9_abundance_table_species.tsv&quot;
-  hdz10: &quot;data/loris/wf16s_abundance/hdz10_abundance_table_species.tsv&quot;
-  hdz11: &quot;data/loris/wf16s_abundance/hdz11_abundance_table_species.tsv&quot;
-  hdz12: &quot;data/loris/wf16s_abundance/hdz12_abundance_table_species.tsv&quot;
-  hdz13: &quot;data/loris/wf16s_abundance/hdz13_abundance_table_species.tsv&quot;
-  hdz14: &quot;data/loris/wf16s_abundance/hdz14_abundance_table_species.tsv&quot;
-  hdz15: &quot;data/loris/wf16s_abundance/hdz15_abundance_table_species.tsv&quot;
-  hdz16: &quot;data/loris/wf16s_abundance/hdz16_abundance_table_species.tsv&quot;
-  hdz17: &quot;data/loris/wf16s_abundance/hdz17_abundance_table_species.tsv&quot;
-  hdz18: &quot;data/loris/wf16s_abundance/hdz18_abundance_table_species.tsv&quot;
-
-methods_16s:
-  libprep_workflow: &quot;&#39;rapid16s&#39;&quot;
-  dorado_model: &quot;&#39;dna_r10.4.1_e8.2_400bps_sup@v5.0.0&#39;&quot;
-  min_length: 1000
-  max_length: 2000
-  min_qual: 7
-  min_id: 85
-  min_cov: 80
-  kit_name: &quot;&#39;SQK-16S114-24&#39;&quot;
-  tax_rank: &quot;S&quot;
-  n_taxa_barplot: 12
-  abund_threshold: 0
-  loris:
-    rarefy: 4500
-    norm: &quot;SRS&quot;
-    min_abund: 0.00001
-    min_freq: 1
-    include_lowest: TRUE
-    unifrac: TRUE
-    betadiv: &quot;aitchison&quot;
-    alpha_pd: TRUE
-    tax4fun_db: &quot;Ref99NR&quot;
-    loris_rarefy: 4500
-    keg_minID: 97
-    </pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-<p>Note that I also include paths to files that this script will create.
-If the file is already there, then it will be overwritten, if not, it
-will be created there. Run the code below to set up your paths from the
-config file for the working sampleset you identified in the header:</p>
-<div class="container-fluid">
-<div id="bslib-accordion-4367" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
-<div class="accordion-item" data-value="Show/Hide External Script">
-<div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-6773" aria-expanded="false" aria-controls="bslib-accordion-panel-6773">
-<div class="accordion-icon"></div>
-<div class="accordion-title">Show/Hide External Script</div>
-</button>
-</div>
-<div id="bslib-accordion-panel-6773" class="accordion-collapse collapse">
-<div class="accordion-body">
-<pre>global            &lt;- config::get(config = &quot;default&quot;)
-swan              &lt;- config::get(config = &quot;swan&quot;)
-micro             &lt;- config::get(config = &quot;microbiome&quot;)
-loris             &lt;- config::get(config = &quot;loris&quot;)
-marmoset          &lt;- config::get(config = &quot;marmoset&quot;)
-isolates          &lt;- config::get(config = &quot;isolates&quot;)
-bats              &lt;- config::get(config = &quot;bats&quot;)
-methods_16s       &lt;- config::get(config = &quot;methods_16s&quot;)
-sample_sheets     &lt;- config::get(config = &quot;sample_sheets&quot;)
-abund_wf16s_files &lt;- config::get(config = &quot;abund_wf16s_files&quot;)
-barcode_alignments&lt;- config::get(config = &quot;barcode_alignments&quot;)
-
-seqruns      &lt;- seqruns %&gt;% keep_at(params$sampleset)       %&gt;% list_flatten(name_spec = &quot;&quot;)
-subject_list &lt;- keep_at(subjects, paste0(params$sampleset)) %&gt;% list_flatten(name_spec = &quot;{inner}&quot;)
-path         &lt;- config::get(config = paste0(params$sampleset))</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
-</div>
 <div id="sequencing-run-lists" class="section level3">
 <h3>Sequencing Run Lists</h3>
 <p>The code in the chunk above also generated a list of formatted codes
 for each available sequencing run to date, separated by taxa/samplesets
 (currently just for loris and marmoset). Make sure the end number
 matches the highest integer we have for that sampleset to date.</p>
-</div>
-<div id="other-setup-scripts" class="section level3">
-<h3>Other Setup Scripts</h3>
-<p>The script that I pasted above sources additional scripts that I run
-routinely at the start of any work to bring in functions and other
-inputs with shorter code chunks as well as the text of the yaml header
-for this R Markdown file. You can flip through the text from those
-below.</p>
-<div class="container-fluid">
-<div id="bslib-accordion-3982" class="accordion" title="Other External Setup Scripts" data-require-bs-version="5" data-require-bs-caller="accordion()">
-<div class="accordion-item" data-value="yaml Header">
-<div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-2567" aria-expanded="false" aria-controls="bslib-accordion-panel-2567">
-<div class="accordion-icon"></div>
-<div class="accordion-title">yaml Header</div>
-</button>
-</div>
-<div id="bslib-accordion-panel-2567" class="accordion-collapse collapse">
-<div class="accordion-body">
-<pre>---
-output:
-  html_document:
-    theme:
-      bslib: true
-    css: journal.css
-    toc: true
-    toc_float: true
-    df_print: paged
-params:
-  sampleset: &quot;loris&quot;
-  seqrun: &quot;hdz18&quot;
-                     
----</pre>
-</div>
-</div>
-</div>
-<div class="accordion-item" data-value="default_inputs.R">
-<div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-9918" aria-expanded="false" aria-controls="bslib-accordion-panel-9918">
-<div class="accordion-icon"></div>
-<div class="accordion-title">default_inputs.R</div>
-</button>
-</div>
-<div id="bslib-accordion-panel-9918" class="accordion-collapse collapse">
-<div class="accordion-body">
-<pre>samplesets &lt;- list(
-  &quot;Omaha Zoo Pygmy Lorises&quot;  = &quot;loris&quot;  , 
-  &quot;UNO Marmosets&quot;            = &quot;marmoset&quot;, 
-  &quot;Wild North American Bats&quot; = &quot;bats&quot;,
-  &quot;North American eDNA&quot;      = &quot;envir&quot;,
-  &quot;Bacterial Isolates&quot;       = &quot;isolates&quot;
-)
-
-
-subjects &lt;- list(
-  marmoset = list(
-    HAM  = &quot;Hamlet&quot;,
-    HER  = &quot;Hera&quot;,
-    JAR  = &quot;JarJar BINKS&quot;,
-    OPH  = &quot;Ophelia&quot;,
-    KUB  = &quot;Kubo&quot;,
-    KOR  = &quot;Korra&quot;,
-    WOL  = &quot;Wolverine&quot;,
-    IRI  = &quot;Iris&quot;,
-    GOO  = &quot;Goose&quot;,
-    LAM  = &quot;Lambchop&quot;,
-    FRA  = &quot;Franc&quot;,
-    IVY  = &quot;Ivy&quot;,
-    CHA  = &quot;Charles&quot;,
-    PAD  = &quot;Padme&quot;,
-    BUB  = &quot;Bubblegum&quot;,
-    GRO  = &quot;Grogu&quot;,
-    MAR  = &quot;Marshmallow&quot;,
-    BUD  = &quot;Buddy&quot;,
-    JOA  = &quot;Joans&quot;,
-    HEN  = &quot;Henry&quot;,
-    GIN  = &quot;Ginger&quot;
-  ),
-  loris = list(
-    WARB = &quot;Warble&quot;,
-    CULI = &quot;Culi&quot;
-  ),
-  bats = list(
-    UNK = &quot;Unknown&quot;
-  ),
-  envir = list(
-    UNK = &quot;Unknown&quot;
-  ),
-  isolates = list(
-    UNK = &quot;Unknown&quot;
-  )
-)
-
-seqruns &lt;- list(
-  loris     = as.list(paste0(&quot;hdz&quot;, 1:18)),
-  marmoset  = as.list(sprintf(&quot;cm%03d&quot;, 1:10)),
-  isolates  = as.list(paste0(&quot;salci&quot;, 1))
-)
-
-colors &lt;- list(
-  f = &quot;#D53288FF&quot;,
-  m = &quot;#3F459BFF&quot;,
-  u = &quot;#21B14BFF&quot;,
-  sire = &quot;#3F459B33&quot;,
-  dam  = &quot;#D5328833&quot;,
-  emph = &quot;#DC8045FF&quot;,
-  seq  = &quot;rcartocolor::Sunset&quot;,
-  div  = &quot;rcartocolor::Temps&quot;,
-  rand = &quot;khroma::stratigraphy&quot;
-)
-
-
-</pre>
-</div>
-</div>
-</div>
-<div class="accordion-item" data-value="knit_engines.R">
-<div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-9869" aria-expanded="false" aria-controls="bslib-accordion-panel-9869">
-<div class="accordion-icon"></div>
-<div class="accordion-title">knit_engines.R</div>
-</button>
-</div>
-<div id="bslib-accordion-panel-9869" class="accordion-collapse collapse">
-<div class="accordion-body">
-<pre>knitr::knit_engines$set(terminal = function(options) {
-  code &lt;- paste(options$code, collapse = &quot;\n&quot;)
-  
-  params &lt;- map(params, ~ if (is.atomic(.)) {list(.)} else {(.)}) %&gt;%
-    list_flatten()
-  
-  patterns &lt;- list(
-    params             = list(
-      sampleset    = paste0(params$sampleset),
-      seqrun       = paste0(params$seqrun),
-      samplesheet  = as.character(sample_sheets[paste0(tolower(params$seqrun))])
-    )            ,
-    
-    global            = global            ,
-    swan              = swan              ,
-    micro             = micro             ,
-    loris             = loris             ,
-    isolates          = isolates          ,
-    bats              = bats              ,
-    methods_16s       = methods_16s       ,
-    sample_sheets     = sample_sheets     ,
-    abund_wf16s_files = abund_wf16s_files ,
-    barcode_alignments= barcode_alignments
-  )
-  
-  
-  # Replace placeholders group by group
-  for (group in names(patterns)) {
-    placeholder_list &lt;- patterns[[group]]
-    for (name in names(placeholder_list)) {
-      placeholder &lt;- paste(group, name, sep = &quot;\\$&quot;) # Match exact placeholder
-      value &lt;- placeholder_list[[name]]
-      
-      # Replace placeholders exactly and avoid breaking suffixes
-      code &lt;- gsub(placeholder, value, code, perl = TRUE)
-    }
-  }
-  
-  options$warning &lt;- FALSE
-  knitr::engine_output(options, code, out = code)
-})
-
-
-knitr::opts_chunk$set(message = FALSE,
-               warning = FALSE,
-               echo    = TRUE,
-               include = TRUE,
-               eval    = TRUE,
-               comment = &quot;&quot;)
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
 </div>
 </div>
 </div>
@@ -3946,6 +3580,7 @@ knitr::opts_chunk$set(message = FALSE,
                                reads_unclassified = target_unclassified,
                                FlowCellSerial,
                                protocol_group_id,
+                               flow_cell_id,
                                SeqRunID,
                                SeqDate,
                                SeqDateTime)
@@ -4032,7 +3667,7 @@ end of the chunk.</p>
 </div>
 <div id="libraries-and-combining-all-records" class="section level2">
 <h2>Libraries and Combining all Records</h2>
-<pre class="r"><code>compilation &lt;- read_csv(path$inventories$libraries)  %&gt;% 
+<pre class="r"><code>compilation &lt;- read_csv(path$inventories$libraries, show_col_types = FALSE, col_types = list(LibraryBarcode = col_character()))  %&gt;% 
   rename_with(~str_replace_all(., &quot;\\s&quot;, &quot;_&quot;)) %&gt;%
   rename_with(~str_remove_all(., &quot;\\(|\\)&quot;)) %&gt;%
   filter(str_starts(SequenceID, &quot;\\w+&quot;) &amp; Seq_ID != &quot;#N/A&quot;) %&gt;%
@@ -4054,7 +3689,8 @@ end of the chunk.</p>
   full_join(extracts, by = join_by(ExtractID)) %&gt;% 
   mutate(SampleID = if_else(is.na(SampleID) &amp; !is.na(ExtractID), &quot;NTC&quot;, SampleID)) %&gt;%
   full_join(barcodes, by = join_by(LibraryCode, LibraryBarcode)) %&gt;%
-  left_join(seqrun.tbl, by = join_by(LibraryCode, FlowCellSerial)) %&gt;% distinct() %&gt;%
+  select(-FlowCellSerial) %&gt;%
+  left_join(seqrun.tbl, by = join_by(LibraryCode)) %&gt;% distinct() %&gt;%
   mutate(steps_remaining = case_when(
     is.na(ExtractID) ~ &quot;sample not extracted&quot;,
     is.na(SequenceID) ~ &quot;extract not sequenced&quot;,
@@ -4087,8 +3723,8 @@ count.libraries &lt;- compilation %&gt;% select(SequenceID, ExtractID, SampleID)
 <pre class="r"><code>samplesheet &lt;- compilation %&gt;%
   filter(steps_remaining == &quot;sample extracted and sequenced&quot;) %&gt;%
                       mutate(barcode = if_else(LibraryBarcode &lt; 10, 
-                                               str_glue(&quot;barcode0&quot;, &quot;{LibraryBarcode}&quot;),
-                                               str_glue(&quot;barcode&quot; , &quot;{LibraryBarcode}&quot;))) %&gt;%
+                                               as.character(str_glue(&quot;barcode0&quot;, &quot;{LibraryBarcode}&quot;)),
+                                               as.character(str_glue(&quot;barcode&quot; , &quot;{LibraryBarcode}&quot;)))) %&gt;%
                       select(flow_cell_id  = FlowCellSerial,
                              experiment_id = protocol_group_id,
                              kit           = LibPrepKit,
@@ -4116,6 +3752,7 @@ basecalling the sequencing run.</p>
 </blockquote>
 </div>
 
+<div id="rmd-source-code">LS0tCnRpdGxlOiAiU2FtcGxlIEludmVudG9yeSIKYXV0aG9yOiAiQWxpY2lhIFJpY2giCmRhdGU6ICJgciBTeXMuRGF0ZSgpYCIKb3V0cHV0OgogIGh0bWxfZG9jdW1lbnQ6CiAgICB0aGVtZToKICAgICAgYnNsaWI6IHRydWUKICAgIHRvYzogdHJ1ZQogICAgdG9jX2RlcHRoOiAzCiAgICB0b2NfZmxvYXQ6IHRydWUKICAgIGRmX3ByaW50OiBwYWdlZAogICAgY3NzOiBqb3VybmFsLmNzcwogICAgY29kZV9kb3dubG9hZDogdHJ1ZQpwYXJhbXM6CiAgc2FtcGxlc2V0OiAibG9yaXMiCiAgc2VxcnVuOiAiaGR6MTgiCiAgICAgICAgICAgICAgICAgICAgIAotLS0KCmBgYHtyIHNldHVwLCBpbmNsdWRlID0gRn0KCmxpYnJhcnkoYnNsaWIpCmxpYnJhcnkoY29uZmxpY3RlZCkKbGlicmFyeShodG1sdG9vbHMpCmxpYnJhcnkoaHRtbHdpZGdldHMpCmxpYnJhcnkodGlkeXZlcnNlKQoKc291cmNlKCJzZXR1cC9jb25mbGljdGVkLlIiKQpzb3VyY2UoInNldHVwL2tuaXRfZW5naW5lc19zaW1wbGUuUiIpCnNvdXJjZSgic2V0dXAvaW5wdXRzX3JlYWRfcHJvY2Vzc2luZy5SIikKCgprbml0cjo6b3B0c19jaHVuayRzZXQoCiAgbWVzc2FnZSAgICAgICA9IEZBTFNFLAogIHdhcm5pbmcgICAgICAgPSBGQUxTRSwKICBlY2hvICAgICAgICAgID0gVFJVRSwKICBpbmNsdWRlICAgICAgID0gVFJVRSwKICBldmFsICAgICAgICAgID0gVFJVRSwKICBjb21tZW50ICAgICAgID0gIiIgICwKICBkZl9wcmludCAgICAgID0gImthYmxlIiwKICBza2ltcl9kaWdpdHMgID0gMiAgICAgICAgKQoKa25pdHI6Om9wdHNfa25pdCRzZXQoCiAgbWVzc2FnZSAgICAgICA9IEZBTFNFLAogIHdhcm5pbmcgICAgICAgPSBGQUxTRSwKICBlY2hvICAgICAgICAgID0gVFJVRSwKICBpbmNsdWRlICAgICAgID0gVFJVRSwKICBldmFsICAgICAgICAgID0gVFJVRSwKICBjb21tZW50ICAgICAgID0gIiIgICwKICBkZl9wcmludCAgICAgID0gImthYmxlIiwKICBza2ltcl9kaWdpdHMgID0gMiAgICAgICAgCiAgKQoKc2VxcnVucyA8LSBzZXFydW5zICU+JSBrZWVwX2F0KHBhcmFtcyRzYW1wbGVzZXQpICAlPiUgbGlzdF9mbGF0dGVuKG5hbWVfc3BlYyA9ICIiKQoKZ2xvYmFsICAgICAgICAgICAgPC0gY29uZmlnOjpnZXQoY29uZmlnID0gImRlZmF1bHQiKQpsb3JpcyAgICAgICAgICAgICA8LSBjb25maWc6OmdldChjb25maWcgPSAibG9yaXMiKQpiYXJjb2RlX2FsaWdubWVudHM8LSBjb25maWc6OmdldChjb25maWcgPSAiYmFyY29kZV9hbGlnbm1lbnRzIikKc2FtcGxlX3NoZWV0cyAgICAgPC0gY29uZmlnOjpnZXQoY29uZmlnID0gInNhbXBsZV9zaGVldHMiKQpwYXRoICAgICAgICAgICAgICA8LSBjb25maWc6OmdldChjb25maWcgPSBwYXN0ZTAocGFyYW1zJHNhbXBsZXNldCkpCgpzdWJqZWN0X2xpc3QgPC0ga2VlcF9hdChzdWJqZWN0cywgcGFzdGUwKHBhcmFtcyRzYW1wbGVzZXQpKSAlPiUgbGlzdF9mbGF0dGVuKG5hbWVfc3BlYyA9ICJ7aW5uZXJ9IikKCmBgYAoKCiMgSW50cm8KClRoaXMgc2NyaXB0IHN0cmVhbWxpbmVzIGFuZCBzdGFuZGFyZGl6ZXMgb3VyIGhhbmRsaW5nIG9mIHRoZSBzdGVwcyB0YWtlbiB0byByZWFjaCBlYWNoIGRhdGFzZXQgZnJvbSBhbiBvcmlnaW5hbCBzYW1wbGVzZXQuIFlvdSB3aWxsIGV4cG9ydCBzb21lIHN0YW5kYXJkaXplZCBjc3YgYW5kIHRzdiB0YWJsZXMgZm9yIGVhc3kgaW1wb3J0aW5nIGFuZCBtYW5pcHVsYXRpb24gd2l0aCBvdXIgb3RoZXIgd29ya2Zsb3dzLgoKIyMgRmlsZXMgTmVlZGVkCgpUbyBzdGFydCwgeW91IHNob3VsZCBoYXZlIGZvdXIgY2F0ZWdvcmllcyBvZiBjc3YgZmlsZXMgKEkgZG93bmxvYWQgdGhlIGZpcnN0IHRocmVlIGZyb20gd29ya2luZyBnb29nbGUgc3ByZWFkc2hlZXRzLCBhbmQgdGhlIGZvdXJ0aCBjYXRlZ29yeSBpcyBhIHNlcmllcyBvZiBmaWxlcyBhdXRvbWF0aWNhbGx5IGdlbmVyYXRlZCBieSBlYWNoIE1pbklPTiBzZXF1ZW5jaW5nIHJ1bikuIFRob3NlIGZpbGVzIGFuZCB0aGVpciBsaXN0IG9mIGNvbHVtbiBoZWFkZXJzIHRvIGJlIHVzZWQgYXJlIGFzIGZvbGxvd3MgKG5vdGU6IGl0IGlzIGZpbmUgdG8gaGF2ZSBleHRyYSBjb2x1bW5zLCBidXQgeW91IG11c3QgYXQgbGVhc3QgaGF2ZSB0aGVzZSB0byBydW4gdGhlIHNjcmlwdCBhcyBpcyk6ICAKCmBgYHtyLCBlY2hvID0gRkFMU0V9CnBhZ2VfZmx1aWQoCiAgICBhY2NvcmRpb24oCiAgICAgIG9wZW4gPSBGQUxTRSwKICAgICAgYWNjb3JkaW9uX3BhbmVsKAogICAgICAgICJTaG93L0hpZGUgRmlsZSBMaXN0IiwKICAgICAgICB0YWdMaXN0KHRhZ0xpc3QoCiAgICB3aXRoVGFncygKICAgICAgb2woCiAgICAgICAgbGkoIkxpYnJhcmllcyIpLAogICAgICAgICAgdWwoCiAgICAgICAgICAgIGxpKCJTZXF1ZW5jZUlEIiksCiAgICAgICAgICAgIGxpKCJQaXBlbGluZSIpLAogICAgICAgICAgICBsaSgiTGlicmFyeVR1YmUiKSwKICAgICAgICAgICAgbGkoIkxpYnJhcnlCYXJjb2RlIiksCiAgICAgICAgICAgIGxpKCJFeHRyYWN0SUQiKSwKICAgICAgICAgICAgbGkoIkZpbmFsX0xpYnJhcnlfQ29uY2VudHJhdGlvbiIpLAogICAgICAgICAgICBsaSgiVm9sdW1lLkFkZGVkLnRvLlBvb2wuKHVMKSIpLAogICAgICAgICAgICBsaSgiU2VxX0lEIiksCiAgICAgICAgICAgIGxpKCJSdW5fSUQiKSwKICAgICAgICAgICAgbGkoIkxpYnJhcnlUdWJlSUQiKQogICAgICAgICAgKSwKICAgICAgICBsaSgiRXh0cmFjdHMiKSwKICAgICAgICAgIHVsKAogICAgICAgICAgICBsaSgiRXh0cmFjdElEIiksCiAgICAgICAgICAgIGxpKCJFeHRyYWN0RGF0ZSIpLAogICAgICAgICAgICBsaSgiRXh0cmFjdGVkQnkiKSwKICAgICAgICAgICAgbGkoIkV4dHJhY3RUeXBlIiksCiAgICAgICAgICAgIGxpKCJFeHRyYWN0S2l0IiksCiAgICAgICAgICAgIGxpKCJTYW1wbGVJRCIpLAogICAgICAgICAgICBsaSgiRXh0cmFjdENvbmNlbnRyYXRpb24iKSwKICAgICAgICAgICAgbGkoIkV4dHJhY3RCb3giKSwKICAgICAgICAgICAgbGkoIkV4dHJhY3ROb3RlcyIpCiAgICAgICAgICAgICksCiAgICAgICAgbGkoIlNhbXBsZXMiKSwKICAgICAgICAgIHVsKCAgCiAgICAgICAgICAgIGxpKCJTYW1wbGVJRCIpLAogICAgICAgICAgICBsaSgiU2FtcGxlU3ViamVjdCIpLAogICAgICAgICAgICBsaSgiU2FtcGxlRGF0ZSIpLAogICAgICAgICAgICBsaSgiU2FtcGxlQ29sbGVjdGVkQnkiKSwKICAgICAgICAgICAgbGkoIlNhbXBsZU5vdGVzIikKICAgICAgICAgICAgKSwKICAgICAgICBsaSgiQmFyY29kZSBBbGlnbm1lbnRzICgxIGZpbGUgcGVyIFJ1bl9JRCkiKSwKICAgICAgICAgIHVsKAogICAgICAgICAgICBsaSgiYmFyY29kZSIpLAogICAgICAgICAgICBsaSgiYWxpYXMiKSwKICAgICAgICAgICAgbGkoInR5cGUiKSwKICAgICAgICAgICAgbGkoInRhcmdldF91bmNsYXNzaWZpZWQiKSwKICAgICAgICAgICAgbGkoInFjcXVpc2l0aW9uX3J1bl9pZCIpLAogICAgICAgICAgICBsaSgicHJvdG9jb2xfZ3JvdXBfaWQiKSwKICAgICAgICAgICAgbGkoInNhbXBsZV9pZCIpLAogICAgICAgICAgICBsaSgiZmxvd19jZWxsX2lkIiksCiAgICAgICAgICAgIGxpKCJzdGFydGVkIikKICAgICAgICAgICAgKQogICAgICAgICkKICAgICAgKQogICAgKQogICAgKQogICAgKQogICAgKQogICAgKQoKYGBgCgoKIyMgT3RoZXIgQ29uZmlndXJhdGlvbiBTZXR0aW5ncwoKIyMjIFNhbXBsZXNldCBpbiBQYXJhbXMKCllvdSBjYW4gdXNlIHRoZSBzYW1wbGVzZXQgc2V0dGluZyB1bmRlciBwYXJhbXMgaW4gdGhlIGhlYWRlciBvZiB0aGlzIHNjcmlwdCB0byBzZWxlY3Qgd2hpY2ggc2FtcGxlc2V0IHlvdSB3aWxsIGJlIHdvcmtpbmcgd2l0aC4gU28gbG9uZyBhcyB0aGUgc2FtZSBuYW1lIGlzIHVzZWQgY29uc2lzdGVudGx5LCB0aGlzIHNob3VsZCBhdXRvbWF0aWNhbGx5IGZpbHRlciBmb3IgdGhhdCBuYW1lIChlLmcuLCBsb3JpcyBvciBtYXJtb3NldCkuIAoKIyMjIFNlcXVlbmNpbmcgUnVuIExpc3RzCgpUaGUgY29kZSBpbiB0aGUgY2h1bmsgYWJvdmUgYWxzbyBnZW5lcmF0ZWQgYSBsaXN0IG9mIGZvcm1hdHRlZCBjb2RlcyBmb3IgZWFjaCBhdmFpbGFibGUgc2VxdWVuY2luZyBydW4gdG8gZGF0ZSwgc2VwYXJhdGVkIGJ5IHRheGEvc2FtcGxlc2V0cyAoY3VycmVudGx5IGp1c3QgZm9yIGxvcmlzIGFuZCBtYXJtb3NldCkuIE1ha2Ugc3VyZSB0aGUgZW5kIG51bWJlciBtYXRjaGVzIHRoZSBoaWdoZXN0IGludGVnZXIgd2UgaGF2ZSBmb3IgdGhhdCBzYW1wbGVzZXQgdG8gZGF0ZS4KCiMgU2NyaXB0CgojIyBCYXJjb2RlIEFsaWdubWVudHMKCmBgYHtyfQpiYXJjb2RlcyA8LSBpbWFwKHNlcXJ1bnMsIH4gewogIG1hcCgueCwgfiByZWFkX3RhYmxlKGJhcmNvZGVfYWxpZ25tZW50c1tbLnhdXSkgJT4lIG11dGF0ZShzZXFydW4gPSAueCkpIAp9KSAlPiUKICAgIGJpbmRfcm93cygpICU+JQogICAgICAgICAgICAgICAgICAgICAgICBhc190aWJibGUoKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgZmlsdGVyKGJhcmNvZGUgICAgICE9ICJ1bmNsYXNzaWZpZWQiKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKFNlcURhdGVUaW1lICA9IGFzX2RhdGV0aW1lKHN0YXJ0ZWQpKSAlPiUKICAgICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKFNlcURhdGUgICAgICA9IGZsb29yX2RhdGUoU2VxRGF0ZVRpbWUsIHVuaXQgPSAiZGF5IikpICU+JQogICAgICAgICAgICAgICAgICAgICAgICBtdXRhdGUoU2VxUnVuSUQgICAgID0gc3RyX3JlcGxhY2VfYWxsKHNhbXBsZV9pZCwgInBvb2wxIiwgIlBMMDAxIikpICU+JQogICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKExpYnJhcnlDb2RlICAgID0gc3RyX3NxdWlzaChzdHJfdHJpbShzZXFydW4gICAgICAsICJib3RoIikpLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIEZsb3dDZWxsU2VyaWFsID0gc3RyX3NxdWlzaChzdHJfdHJpbShmbG93X2NlbGxfaWQsICJib3RoIikpCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgKSAlPiUKICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZShMaWJyYXJ5QmFyY29kZSAgPSBhcy5udW1lcmljKHN0cl9yZW1vdmVfYWxsKGJhcmNvZGUsICIxNlN8YmFyY29kZTB8YmFyY29kZSIpKSkgJT4lCiAgICAgICAgICAgICAgICAgICAgICAgIHNlbGVjdChMaWJyYXJ5Q29kZSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIExpYnJhcnlCYXJjb2RlLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcmVhZHNfdW5jbGFzc2lmaWVkID0gdGFyZ2V0X3VuY2xhc3NpZmllZCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIEZsb3dDZWxsU2VyaWFsLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgcHJvdG9jb2xfZ3JvdXBfaWQsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBmbG93X2NlbGxfaWQsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBTZXFSdW5JRCwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIFNlcURhdGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBTZXFEYXRlVGltZSkKCndyaXRlLnRhYmxlKGJhcmNvZGVzLCBiYXJjb2RlX2FsaWdubWVudHMkY29tcGlsYXRpb25zW1twYXN0ZTAocGFyYW1zJHNhbXBsZXNldCldXSwKICAgICAgICAgICAgcm93Lm5hbWVzID0gRiwKICAgICAgICAgICAgc2VwID0gIlx0IikKYGBgCgojIyBTZXF1ZW5jaW5nIFJ1bnMKCmBgYHtyLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQpzZXFydW4udGJsIDwtIHJlYWRfY3N2KHBhdGgkaW52ZW50b3JpZXMkc2VxcnVucykgJT4lIAogIHJlbmFtZV93aXRoKH5zdHJfcmVwbGFjZV9hbGwoLiwgIlxccyIsICJfIikpICU+JQogIG11dGF0ZShTYW1wbGVTZXQgICAgICAgPSBjYXNlX3doZW4oCiAgICBzdHJfZGV0ZWN0KFBvb2xlZF9MaWJyYXJ5X0NvZGUsICJDTSIpICB+ICJtYXJtb3NldCIsIAogICAgc3RyX2RldGVjdChQb29sZWRfTGlicmFyeV9Db2RlLCAiUEwiKSAgfiAibG9yaXMiLAogICAgc3RyX2RldGVjdChQb29sZWRfTGlicmFyeV9Db2RlLCAiTldSIikgfiAiYmF0cyIsIC5kZWZhdWx0ID0gInVua25vd24iKSwKICAgICAgICAgTGlicmFyeUNvZGUgICAgID0gc3RyX3RvX2xvd2VyKFBvb2xlZF9MaWJyYXJ5X0NvZGUpLAogICAgICAgICBMaWJQcmVwV29ya2Zsb3cgPSBjYXNlX3doZW4oCiAgICAgICAgICAgc3RyX2RldGVjdChLaXQsICJMU0siKSAmIFBpcGVsaW5lID09ICIxNlMiIH4gImxzazE2cyIsCiAgICAgICAgICAgUGlwZWxpbmUgPT0gIkhvc3QgbXRETkEiICAgICAgICAgICAgICAgICAgIH4gImxza2FkYXB0aXZlIiwKICAgICAgICAgICBzdHJfZGV0ZWN0KEtpdCwgIlNRSy0xNlMiKSAmIFBpcGVsaW5lID09ICIxNlMiIH4gInJhcGlkMTZzIiksCiAgICAgICAgIExpYlByZXBEYXRlICAgICA9IG1keShSdW5fRGF0ZSksCiAgICAgICAgIFNlcVJ1bkRhdGUgICAgICA9IHltZChzdHJfcmVtb3ZlX2FsbChzdHJfdHJpbShSdW5fSUQsICJib3RoIiksICJNSU5fMTZffE1JTl8xNi18TUlOX01UXyIpKSkgJT4lCiAgbXV0YXRlKExpYnJhcnlDb2RlICAgICA9IHN0cl9yZXBsYWNlX2FsbChMaWJyYXJ5Q29kZSwgInBsMDB8cGwwIiwgImhkeiIpLAogICAgICAgICBzdHJhbmRzICAgICAgICAgPSAyLAogICAgICAgICBmcmFnbWVudF90eXBlICAgPSBpZl9lbHNlKFBpcGVsaW5lID09ICIxNlMiLCAzLCAxKSwKICAgICAgICAgTGVuZ3RoICAgICAgICAgID0gaWZfZWxzZShQaXBlbGluZSA9PSAiMTZTIiwgMTUwMCwgMTAwMDApLAogICAgICAgICBJbnB1dE1hc3NTdGFydCAgPSBpZl9lbHNlKFBpcGVsaW5lID09ICIxNlMiLCAxMCwgMTAwMCksCiAgICAgICAgIFRlbXBsYXRlVm9sUHJlcCA9IGlmX2Vsc2UoTGliUHJlcFdvcmtmbG93ID09ICJyYXBpZDE2cyIsIDE1LCA0NyksCiAgICAgICAgIFBvb2xTYW1wbGVzICAgICA9IGlmX2Vsc2UoUGlwZWxpbmUgPT0gIjE2UyIsICJ5ZXMiLCAibm8iKSwKICAgICAgICAgSW5wdXRNYXNzRmluYWwgID0gNTAKICAgICAgICAgKSAlPiUKICBmaWx0ZXIoU2FtcGxlU2V0ID09IHBhcmFtcyRzYW1wbGVzZXQpICU+JQogIHNlbGVjdCgKICAgICAgICAgU2FtcGxlU2V0LAogICAgICAgICBMaWJyYXJ5Q29kZSwKICAgICAgICAgTGliUHJlcERhdGUsCiAgICAgICAgIExpYlByZXBXb3JrZmxvdywKICAgICAgICAgTGliUHJlcEtpdCAgICAgID0gS2l0LAogICAgICAgICBGbG93Q2VsbFNlcmlhbCAgPSBGbG93X0NlbGxfSUQsCiAgICAgICAgIEZsb3dDZWxsVHlwZSAgICA9IEZsb3dfQ2VsbF9UeXBlLAogICAgICAgICBGbG9uZ2xlQWRhcHRlciAgPSBGbG9uZ2xlX0FkYXB0ZXIsCiAgICAgICAgIFNlcURldmljZSAgICAgICA9IFNlcXVlbmNlciwKICAgICAgICAgc3RyYW5kcywKICAgICAgICAgZnJhZ21lbnRfdHlwZSwKICAgICAgICAgTGVuZ3RoLAogICAgICAgICBJbnB1dE1hc3NTdGFydCwKICAgICAgICAgVGVtcGxhdGVWb2xQcmVwLAogICAgICAgICBQb29sU2FtcGxlcywKICAgICAgICAgSW5wdXRNYXNzRmluYWwpCmBgYAoKCiMjIFNhbXBsZSBSZWNvcmRzCgpgYGB7ciwgd2FybmluZyA9IEZBTFNFfQpzYW1wbGVzICAgICA8LSByZWFkX2NzdihwYXRoJGludmVudG9yaWVzJGNvbGxlY3Rpb24pICU+JSAKICByZW5hbWVfd2l0aCh+c3RyX3JlcGxhY2VfYWxsKC4sICJcXHMiLCAiXyIpKSAlPiUKICAgICAgICAgICAgICAgICAgICAgIGZpbHRlcihzdHJfc3RhcnRzKFNhbXBsZUlELCAiXFx3KyIpKSAlPiUgCiAgICAgICAgICAgICAgICAgICAgICBzZWxlY3QoLVNhbXBsZUJveCkgICU+JQogICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKFNhbXBsZUlEID0gc3RyX3NxdWlzaChzdHJfdHJpbShTYW1wbGVJRCwgImJvdGgiKSkpICU+JSBkaXN0aW5jdCgpICU+JQogICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKENvbGxlY3Rpb25EYXRlICAgICA9IG1keShTYW1wbGVEYXRlKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICBTdWJqZWN0ICAgICAgICAgICAgPSBzdHJfc3F1aXNoKHN0cl90cmltKFNhbXBsZVN1YmplY3QpKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAua2VlcCA9ICJ1bnVzZWQiKSAlPiUgZGlzdGluY3QoKSAlPiUKICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZShTdWJqX0NlcnRhaW50eSA9IGlmX2Vsc2UoU3ViamVjdCAlaW4lIHN1YmplY3RfbGlzdCwgInllcyIsICJubyIpKSAlPiUKICAgICAgICAgICAgICAgICAgICAgIG11dGF0ZShTdWJqZWN0ICAgICAgICA9IHN0cl9yZW1vdmVfYWxsKFN1YmplY3QsICJcXD8iKSkKYGBgCgojIyBETkEgRXh0cmFjdCBSZWNvcmRzCgpXZSB3aWxsIGFsc28gam9pbiB0aGUgcHJldmlvdXMgc2FtcGxlIHJlY29yZHMgdG8gdGhpcyB0YWJsZSBhdCB0aGUgZW5kIG9mIHRoZSBjaHVuay4KCmBgYHtyfQpleHRyYWN0cyA8LSByZWFkX2NzdihwYXRoJGludmVudG9yaWVzJGV4dHJhY3Rpb24pICU+JSAKICByZW5hbWVfd2l0aCh+c3RyX3JlcGxhY2VfYWxsKC4sICJcXHMiLCAiXyIpKSAlPiUKICBmaWx0ZXIoc3RyX3N0YXJ0cyhTYW1wbGVJRCwgIlxcdysiKSkgJT4lCiAgbXV0YXRlKFNhbXBsZUlEICAgICAgICA9IGlmX2Vsc2Uoc3RyX2RldGVjdChTYW1wbGVJRCwgIiNOL0EiKSB8IGlzLm5hKFNhbXBsZUlEKSwgIkV4dHJhY3RDb250cm9sIiwgU2FtcGxlSUQpKSAlPiUKICBtdXRhdGUoU2FtcGxlSUQgPSBzdHJfc3F1aXNoKHN0cl90cmltKFNhbXBsZUlELCAiYm90aCIpKSwKICAgICAgICAgRXh0cmFjdElEPSBzdHJfc3F1aXNoKHN0cl90cmltKEV4dHJhY3RJRCwgImJvdGgiKSksCiAgICAgICAgIEV4dHJhY3REYXRlICAgICAgID0gbWR5KEV4dHJhY3REYXRlKSkgJT4lCiAgbXV0YXRlKEV4dHJhY3RDb25jICAgICAgID0gc3RyX3JlbW92ZV9hbGwoRXh0cmFjdENvbmNlbnRyYXRpb24sICI+IiksIC5rZWVwID0gInVudXNlZCIpICU+JQogIG11dGF0ZShFeHRyYWN0Q29uYyA9IGlmX2Vsc2Uoc3RyX2RldGVjdChFeHRyYWN0Q29uYywgIkhpZ2hlciIpLCAiMTAwIiwgRXh0cmFjdENvbmMpLAogICAgICAgICBFeHRyYWN0Q29uYyA9IGlmX2Vsc2Uoc3RyX2RldGVjdChFeHRyYWN0Q29uYywgIkhJR0hFUiIpLCAiMTAwIiwgRXh0cmFjdENvbmMpLAogICAgICAgICBFeHRyYWN0Q29uYyA9IGlmX2Vsc2UoRXh0cmFjdENvbmMgPT0gIkxPVyIsICIwIiwgRXh0cmFjdENvbmMpLAogICAgICAgICBFeHRyYWN0Q29uYyA9IGlmX2Vsc2UoRXh0cmFjdENvbmMgPT0gIiIsIE5BLCBFeHRyYWN0Q29uYykpICU+JQogIG11dGF0ZShFeHRyYWN0Q29uYyA9IHJvdW5kKGFzLm51bWVyaWMoRXh0cmFjdENvbmMpLCAxKSkgICU+JSBmaWx0ZXIoRXh0cmFjdFR5cGUgPT0gIkROQSIgfCBFeHRyYWN0VHlwZSA9PSAiZG5hIikgJT4lCiAgc2VsZWN0KC1FeHRyYWN0VHlwZSkgJT4lCiAgcmlnaHRfam9pbihzYW1wbGVzKSAlPiUgZGlzdGluY3QoKQpgYGAKCiMjIExpYnJhcmllcyBhbmQgQ29tYmluaW5nIGFsbCBSZWNvcmRzCgoKYGBge3J9CmNvbXBpbGF0aW9uIDwtIHJlYWRfY3N2KHBhdGgkaW52ZW50b3JpZXMkbGlicmFyaWVzLCBzaG93X2NvbF90eXBlcyA9IEZBTFNFLCBjb2xfdHlwZXMgPSBsaXN0KExpYnJhcnlCYXJjb2RlID0gY29sX2NoYXJhY3RlcigpKSkgICU+JSAKICByZW5hbWVfd2l0aCh+c3RyX3JlcGxhY2VfYWxsKC4sICJcXHMiLCAiXyIpKSAlPiUKICByZW5hbWVfd2l0aCh+c3RyX3JlbW92ZV9hbGwoLiwgIlxcKHxcXCkiKSkgJT4lCiAgZmlsdGVyKHN0cl9zdGFydHMoU2VxdWVuY2VJRCwgIlxcdysiKSAmIFNlcV9JRCAhPSAiI04vQSIpICU+JQogIG11dGF0ZShMaWJyYXJ5Q29kZSAgICAgPSBzdHJfdG9fbG93ZXIoU2VxX0lEKSkgJT4lCiAgbXV0YXRlKExpYnJhcnlDb2RlICAgICA9IHN0cl9yZXBsYWNlX2FsbChMaWJyYXJ5Q29kZSwgInBsMDB8cGwwIiAsICJoZHoiKSwKICAgICAgICAgU2FtcFZvbFBvb2wgICAgID0gcm91bmQoYXMubnVtZXJpYyhWb2x1bWVfQWRkZWRfdG9fUG9vbF91TCksIDApLAogICAgICAgICBMaWJyYXJ5QmFyY29kZSAgPSBhcy5udW1lcmljKHN0cl9yZW1vdmVfYWxsKExpYnJhcnlCYXJjb2RlLCAiMTZTfGJhcmNvZGUwfGJhcmNvZGUiKSkpICU+JQogIG11dGF0ZShUb3RhbFBvb2xWb2wgICAgPSBzdW0oU2FtcFZvbFBvb2wpLCAuYnkgPSBMaWJyYXJ5Q29kZSkgJT4lCiAgbXV0YXRlKEJlYWRWb2wgICAgICAgICA9IFRvdGFsUG9vbFZvbCAqIDAuNikgJT4lCiAgc2VsZWN0KFNlcXVlbmNlSUQsCiAgICAgICAgIExpYnJhcnlDb2RlLAogICAgICAgICBMaWJyYXJ5VHViZSwKICAgICAgICAgTGlicmFyeUJhcmNvZGUsCiAgICAgICAgIEV4dHJhY3RJRCwKICAgICAgICAgU2FtcFZvbFBvb2wsCiAgICAgICAgIFRvdGFsUG9vbFZvbCwKICAgICAgICAgQmVhZFZvbCwKICAgICAgICAgQ29uY19RQzIgICAgPSBGaW5hbF9MaWJyYXJ5X0NvbmNlbnRyYXRpb24pICU+JQogIGZ1bGxfam9pbihleHRyYWN0cywgYnkgPSBqb2luX2J5KEV4dHJhY3RJRCkpICU+JSAKICBtdXRhdGUoU2FtcGxlSUQgPSBpZl9lbHNlKGlzLm5hKFNhbXBsZUlEKSAmICFpcy5uYShFeHRyYWN0SUQpLCAiTlRDIiwgU2FtcGxlSUQpKSAlPiUKICBmdWxsX2pvaW4oYmFyY29kZXMsIGJ5ID0gam9pbl9ieShMaWJyYXJ5Q29kZSwgTGlicmFyeUJhcmNvZGUpKSAlPiUKICBzZWxlY3QoLUZsb3dDZWxsU2VyaWFsKSAlPiUKICBsZWZ0X2pvaW4oc2VxcnVuLnRibCwgYnkgPSBqb2luX2J5KExpYnJhcnlDb2RlKSkgJT4lIGRpc3RpbmN0KCkgJT4lCiAgbXV0YXRlKHN0ZXBzX3JlbWFpbmluZyA9IGNhc2Vfd2hlbigKICAgIGlzLm5hKEV4dHJhY3RJRCkgfiAic2FtcGxlIG5vdCBleHRyYWN0ZWQiLAogICAgaXMubmEoU2VxdWVuY2VJRCkgfiAiZXh0cmFjdCBub3Qgc2VxdWVuY2VkIiwKICAgICFpcy5uYShFeHRyYWN0SUQpICYgIWlzLm5hKFNlcXVlbmNlSUQpICYgIWlzLm5hKFNhbXBsZUlEKSB+ICJzYW1wbGUgZXh0cmFjdGVkIGFuZCBzZXF1ZW5jZWQiCiAgKSkgJT4lCiAgcmVsb2NhdGUoU2FtcGxlSUQsIEV4dHJhY3RJRCwgU2VxdWVuY2VJRCwgc3RlcHNfcmVtYWluaW5nKSAlPiUKICBhcnJhbmdlKENvbGxlY3Rpb25EYXRlLCBTdWJqZWN0KQpgYGAKCiMjIyBFeHBvcnRpbmcgYSBTcHJlYWRzaGVldCB3aXRoIFJlY29yZHMKCldlIHdpbGwgdXNlIHRoaXMgc3ByZWFkc2hlZXQgZm9yIGJ1aWxkaW5nIHRoZSBtZXRhZGF0YSB0YWJsZSBidXQgYWxzbyBmb3IgY2FsbGluZyB1cCBzYW1wbGUgaW5mbyBpbiBvdXIgcHJvdG9jb2wgYXBwcy4KCmBgYHtyLCBtZXNzYWdlPUZBTFNFLCB3YXJuaW5nPUZBTFNFfQp3cml0ZS50YWJsZShjb21waWxhdGlvbiwKICAgICAgICAgICAgcGF0aCRpbnZlbnRvcmllcyRhbGxfc3RhZ2VzLAogICAgICAgICAgICByb3cubmFtZXMgPSBGLAogICAgICAgICAgICBzZXAgPSAiXHQiKQpgYGAKCgojIyBDb3VudGluZyBSZXBsaWNhdGVzCgpgYGB7cn0KY291bnQuZXh0cmFjdHMgICAgPC0gZXh0cmFjdHMgJT4lIHNlbGVjdChFeHRyYWN0SUQsIFNhbXBsZUlEKSAlPiUgZGlzdGluY3QoKSAlPiUgCiAgZ3JvdXBfYnkoU2FtcGxlSUQpICAlPiUgCiAgbXV0YXRlKG5fZG5hX2V4dHJhY3RzID0gbl9kaXN0aW5jdChFeHRyYWN0SUQpKSAlPiUgdW5ncm91cCgpICU+JSBzZWxlY3QoLUV4dHJhY3RJRCkKCmNvdW50LmxpYnJhcmllcyA8LSBjb21waWxhdGlvbiAlPiUgc2VsZWN0KFNlcXVlbmNlSUQsIEV4dHJhY3RJRCwgU2FtcGxlSUQpICU+JSBkaXN0aW5jdCgpICU+JSAKICBncm91cF9ieShFeHRyYWN0SUQpICU+JSBtdXRhdGUobl8xNnNfZXh0cmFjdCA9IG5fZGlzdGluY3QoU2VxdWVuY2VJRCkpICU+JSB1bmdyb3VwKCkgJT4lCiAgZ3JvdXBfYnkoU2FtcGxlSUQpICAlPiUgbXV0YXRlKG5fMTZzX3NhbXBsZSAgPSBuX2Rpc3RpbmN0KFNlcXVlbmNlSUQpKSAlPiUgdW5ncm91cCgpICU+JSBzZWxlY3QoLVNlcXVlbmNlSUQpCmBgYAoKIyMgRXhwb3J0aW5nIFNhbXBsZVNoZWV0cyBmb3JtYXR0ZWQgZm9yIERvcmFkbwoKYGBge3IsIG1lc3NhZ2U9RkFMU0UsIHdhcm5pbmc9RkFMU0V9CnNhbXBsZXNoZWV0IDwtIGNvbXBpbGF0aW9uICU+JQogIGZpbHRlcihzdGVwc19yZW1haW5pbmcgPT0gInNhbXBsZSBleHRyYWN0ZWQgYW5kIHNlcXVlbmNlZCIpICU+JQogICAgICAgICAgICAgICAgICAgICAgbXV0YXRlKGJhcmNvZGUgPSBpZl9lbHNlKExpYnJhcnlCYXJjb2RlIDwgMTAsIAogICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgIGFzLmNoYXJhY3RlcihzdHJfZ2x1ZSgiYmFyY29kZTAiLCAie0xpYnJhcnlCYXJjb2RlfSIpKSwKICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICAgICBhcy5jaGFyYWN0ZXIoc3RyX2dsdWUoImJhcmNvZGUiICwgIntMaWJyYXJ5QmFyY29kZX0iKSkpKSAlPiUKICAgICAgICAgICAgICAgICAgICAgIHNlbGVjdChmbG93X2NlbGxfaWQgID0gRmxvd0NlbGxTZXJpYWwsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgZXhwZXJpbWVudF9pZCA9IHByb3RvY29sX2dyb3VwX2lkLAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGtpdCAgICAgICAgICAgPSBMaWJQcmVwS2l0LAogICAgICAgICAgICAgICAgICAgICAgICAgICAgIGJhcmNvZGUsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgYWxpYXMgICAgICAgICA9IFNlcXVlbmNlSUQsCiAgICAgICAgICAgICAgICAgICAgICAgICAgICAgc2VxcnVuICAgICAgICA9IExpYnJhcnlDb2RlKQoKd3JpdGUudGFibGUoc2FtcGxlc2hlZXQsIAogICAgICAgICAgc2FtcGxlX3NoZWV0cyRjb21waWxhdGlvbnNbW3Bhc3RlMChwYXJhbXMkc2FtcGxlc2V0KV1dLAogICAgICAgICAgcm93Lm5hbWVzID0gRiwKICAgICAgICAgIHF1b3RlICAgICA9IEYsCiAgICAgICAgICBzZXAgICAgICAgPSAiLCIpCmBgYAoKIyMjIFNwbGl0dGluZyBTYW1wbGVzaGVldCB0byBJbmRpdmlkdWFsIEZpbGVzIGZvciBFYWNoIFJ1bgoKCmBgYHtyfQpzYW1wbGVzaGVldC5uZXN0ZWQgPC0gc2FtcGxlc2hlZXQgJT4lIG5lc3QoLmJ5ID0gc2VxcnVuKSAlPiUKICBkZWZyYW1lKCkKYGBgCgoKYGBge3IsIGluY2x1ZGUgPSBGQUxTRX0KaW1hcChzYW1wbGVzaGVldC5uZXN0ZWQsIH4gewogIHdyaXRlLnRhYmxlKC54LCAoc2FtcGxlX3NoZWV0c1tbLnldXSksCiAgICAgICAgICByb3cubmFtZXMgPSBGLAogICAgICAgICAgcXVvdGUgICAgID0gRiwKICAgICAgICAgIHNlcCAgICAgICA9ICIsIikKfSkKYGBgCgoKCiMgTmV4dCBTdGVwCgo+Tm93IHlvdSBzaG91bGQgcHJvY2VlZCB0byB0aGUgUmVhZCBQcm9jZXNzaW5nIHdvcmtmbG93IHRvIGJlZ2luIGJhc2VjYWxsaW5nIHRoZSBzZXF1ZW5jaW5nIHJ1bi4K</div>
 
 
 </div>
@@ -4151,6 +3788,11 @@ $(document).ready(function () {
 </script>
 
 <!-- code folding -->
+<script>
+$(document).ready(function () {
+  window.initializeSourceEmbed("sample_inventory.Rmd");
+});
+</script>
 
 <script>
 $(document).ready(function ()  {
