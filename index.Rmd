@@ -163,6 +163,21 @@ page_fluid(
 
 
 
+# Markdown Syntax
+
+Download the following cheatsheet from [The Markdown Guide](https://www.markdownguide.org) for handy inline syntax when composing R Markdown files like those used in my tutorials.
+
+```{r, echo = FALSE}
+download_file(
+  path           = "markdown-cheat-sheet.md",
+  output_name    = "markdown-cheat-sheet",
+  button_label   = "Download the Markdown Cheat Sheet",
+  button_type    = "danger",
+  has_icon       = TRUE,
+  icon           = "fa fa-save",
+  self_contained = FALSE
+)
+```
 
 
 

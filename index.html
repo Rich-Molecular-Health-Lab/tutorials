@@ -1421,6 +1421,13 @@ lit-html/is-server.js:
   }
 });
 </script>
+<script>const link = document.createElement('link');
+link.rel = 'stylesheet';
+link.href = 'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css';
+link.type = 'text/css';
+const head = document.getElementsByTagName('head')[0];
+head.appendChild(link);
+</script>
 
 <style type="text/css">
 code{white-space: pre-wrap;}
@@ -1852,6 +1859,8 @@ option in the R Markdown Header</a></li>
 <li><a href="#custom-engines" id="toc-custom-engines">Custom
 Engines</a></li>
 </ul></li>
+<li><a href="#markdown-syntax" id="toc-markdown-syntax">Markdown
+Syntax</a></li>
 </ul>
 </div>
 
@@ -2076,15 +2085,15 @@ file looks like as well as the R script I use to integrate this with the
 <code>params</code> values for consistent file sourcing and writing
 across datasets.</p>
 <div class="container-fluid">
-<div id="bslib-accordion-1546" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
+<div id="bslib-accordion-9640" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
 <div class="accordion-item" data-value="Show/Hide `config.yml` File">
 <div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-4337" aria-expanded="false" aria-controls="bslib-accordion-panel-4337">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-2742" aria-expanded="false" aria-controls="bslib-accordion-panel-2742">
 <div class="accordion-icon"></div>
 <div class="accordion-title">Show/Hide `config.yml` File</div>
 </button>
 </div>
-<div id="bslib-accordion-panel-4337" class="accordion-collapse collapse">
+<div id="bslib-accordion-panel-2742" class="accordion-collapse collapse">
 <div class="accordion-body">
 <pre>default:
   setup: &quot;setup/global/setup.R&quot;
@@ -2389,12 +2398,12 @@ methods_16s:
 </div>
 <div class="accordion-item" data-value="Show/Hide `config_paths.R` Script">
 <div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-2685" aria-expanded="false" aria-controls="bslib-accordion-panel-2685">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-8139" aria-expanded="false" aria-controls="bslib-accordion-panel-8139">
 <div class="accordion-icon"></div>
 <div class="accordion-title">Show/Hide `config_paths.R` Script</div>
 </button>
 </div>
-<div id="bslib-accordion-panel-2685" class="accordion-collapse collapse">
+<div id="bslib-accordion-panel-8139" class="accordion-collapse collapse">
 <div class="accordion-body">
 <pre>global            &lt;- config::get(config = &quot;default&quot;)
 swan              &lt;- config::get(config = &quot;swan&quot;)
@@ -2433,15 +2442,15 @@ it.</p>
 <p>You can expand the content below to see the code that I run at the
 start of many of these scripts to initiate those language engines.</p>
 <div class="container-fluid">
-<div id="bslib-accordion-6684" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
+<div id="bslib-accordion-8295" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
 <div class="accordion-item" data-value="knit_engines.R">
 <div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-4773" aria-expanded="false" aria-controls="bslib-accordion-panel-4773">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-6456" aria-expanded="false" aria-controls="bslib-accordion-panel-6456">
 <div class="accordion-icon"></div>
 <div class="accordion-title">knit_engines.R</div>
 </button>
 </div>
-<div id="bslib-accordion-panel-4773" class="accordion-collapse collapse">
+<div id="bslib-accordion-panel-6456" class="accordion-collapse collapse">
 <div class="accordion-body">
 <pre>knitr::knit_engines$set(terminal = function(options) {
   code &lt;- paste(options$code, collapse = &quot;\n&quot;)
@@ -2500,6 +2509,38 @@ knitr::opts_chunk$set(message = FALSE,
 </div>
 </div>
 </div>
+</div>
+<div id="markdown-syntax" class="section level1">
+<h1>Markdown Syntax</h1>
+<p>Download the following cheatsheet from <a href="https://www.markdownguide.org">The Markdown Guide</a> for handy
+inline syntax when composing R Markdown files like those used in my
+tutorials.</p>
+<button class="btn btn-danger" onclick="
+    async function downloadFile(event) {
+      event.preventDefault();
+      try {
+        const response = await fetch(&#39;data:text/markdown;base64,IyBNYXJrZG93biBDaGVhdCBTaGVldAoKVGhhbmtzIGZvciB2aXNpdGluZyBbVGhlIE1hcmtkb3duIEd1aWRlXShodHRwczovL3d3dy5tYXJrZG93bmd1aWRlLm9yZykhCgpUaGlzIE1hcmtkb3duIGNoZWF0IHNoZWV0IHByb3ZpZGVzIGEgcXVpY2sgb3ZlcnZpZXcgb2YgYWxsIHRoZSBNYXJrZG93biBzeW50YXggZWxlbWVudHMuIEl0IGNhbuKAmXQgY292ZXIgZXZlcnkgZWRnZSBjYXNlLCBzbyBpZiB5b3UgbmVlZCBtb3JlIGluZm9ybWF0aW9uIGFib3V0IGFueSBvZiB0aGVzZSBlbGVtZW50cywgcmVmZXIgdG8gdGhlIHJlZmVyZW5jZSBndWlkZXMgZm9yIFtiYXNpYyBzeW50YXhdKGh0dHBzOi8vd3d3Lm1hcmtkb3duZ3VpZGUub3JnL2Jhc2ljLXN5bnRheC8pIGFuZCBbZXh0ZW5kZWQgc3ludGF4XShodHRwczovL3d3dy5tYXJrZG93bmd1aWRlLm9yZy9leHRlbmRlZC1zeW50YXgvKS4KCiMjIEJhc2ljIFN5bnRheAoKVGhlc2UgYXJlIHRoZSBlbGVtZW50cyBvdXRsaW5lZCBpbiBKb2huIEdydWJlcuKAmXMgb3JpZ2luYWwgZGVzaWduIGRvY3VtZW50LiBBbGwgTWFya2Rvd24gYXBwbGljYXRpb25zIHN1cHBvcnQgdGhlc2UgZWxlbWVudHMuCgojIyMgSGVhZGluZwoKIyBIMQojIyBIMgojIyMgSDMKCiMjIyBCb2xkCgoqKmJvbGQgdGV4dCoqCgojIyMgSXRhbGljCgoqaXRhbGljaXplZCB0ZXh0KgoKIyMjIEJsb2NrcXVvdGUKCj4gYmxvY2txdW90ZQoKIyMjIE9yZGVyZWQgTGlzdAoKMS4gRmlyc3QgaXRlbQoyLiBTZWNvbmQgaXRlbQozLiBUaGlyZCBpdGVtCgojIyMgVW5vcmRlcmVkIExpc3QKCi0gRmlyc3QgaXRlbQotIFNlY29uZCBpdGVtCi0gVGhpcmQgaXRlbQoKIyMjIENvZGUKCmBjb2RlYAoKIyMjIEhvcml6b250YWwgUnVsZQoKLS0tCgojIyMgTGluawoKW01hcmtkb3duIEd1aWRlXShodHRwczovL3d3dy5tYXJrZG93bmd1aWRlLm9yZykKCiMjIyBJbWFnZQoKIVthbHQgdGV4dF0oaHR0cHM6Ly93d3cubWFya2Rvd25ndWlkZS5vcmcvYXNzZXRzL2ltYWdlcy90dXgucG5nKQoKIyMgRXh0ZW5kZWQgU3ludGF4CgpUaGVzZSBlbGVtZW50cyBleHRlbmQgdGhlIGJhc2ljIHN5bnRheCBieSBhZGRpbmcgYWRkaXRpb25hbCBmZWF0dXJlcy4gTm90IGFsbCBNYXJrZG93biBhcHBsaWNhdGlvbnMgc3VwcG9ydCB0aGVzZSBlbGVtZW50cy4KCiMjIyBUYWJsZQoKfCBTeW50YXggfCBEZXNjcmlwdGlvbiB8CnwgLS0tLS0tLS0tLS0gfCAtLS0tLS0tLS0tLSB8CnwgSGVhZGVyIHwgVGl0bGUgfAp8IFBhcmFncmFwaCB8IFRleHQgfAoKIyMjIEZlbmNlZCBDb2RlIEJsb2NrCgpgYGAKewogICJmaXJzdE5hbWUiOiAiSm9obiIsCiAgImxhc3ROYW1lIjogIlNtaXRoIiwKICAiYWdlIjogMjUKfQpgYGAKCiMjIyBGb290bm90ZQoKSGVyZSdzIGEgc2VudGVuY2Ugd2l0aCBhIGZvb3Rub3RlLiBbXjFdCgpbXjFdOiBUaGlzIGlzIHRoZSBmb290bm90ZS4KCiMjIyBIZWFkaW5nIElECgojIyMgTXkgR3JlYXQgSGVhZGluZyB7I2N1c3RvbS1pZH0KCiMjIyBEZWZpbml0aW9uIExpc3QKCnRlcm0KOiBkZWZpbml0aW9uCgojIyMgU3RyaWtldGhyb3VnaAoKfn5UaGUgd29ybGQgaXMgZmxhdC5+fgoKIyMjIFRhc2sgTGlzdAoKLSBbeF0gV3JpdGUgdGhlIHByZXNzIHJlbGVhc2UKLSBbIF0gVXBkYXRlIHRoZSB3ZWJzaXRlCi0gWyBdIENvbnRhY3QgdGhlIG1lZGlhCgojIyMgRW1vamkKClRoYXQgaXMgc28gZnVubnkhIDpqb3k6CgooU2VlIGFsc28gW0NvcHlpbmcgYW5kIFBhc3RpbmcgRW1vamldKGh0dHBzOi8vd3d3Lm1hcmtkb3duZ3VpZGUub3JnL2V4dGVuZGVkLXN5bnRheC8jY29weWluZy1hbmQtcGFzdGluZy1lbW9qaSkpCgojIyMgSGlnaGxpZ2h0CgpJIG5lZWQgdG8gaGlnaGxpZ2h0IHRoZXNlID09dmVyeSBpbXBvcnRhbnQgd29yZHM9PS4KCiMjIyBTdWJzY3JpcHQKCkh+Mn5PCgojIyMgU3VwZXJzY3JpcHQKClheMl4=&#39;);
+        if (!response.ok) throw new Error(&#39;Network response failed&#39;);
+        const blob = await response.blob();
+        const blobUrl = window.URL.createObjectURL(blob);
+        const a = document.createElement(&#39;a&#39;);
+        a.href = blobUrl;
+        a.download = &#39;markdown-cheat-sheet.md&#39;;
+        a.style.display = &#39;none&#39;;
+        document.body.appendChild(a);
+        a.dispatchEvent(new MouseEvent(&#39;click&#39;));
+        document.body.removeChild(a);
+        setTimeout(() =&gt; {
+          window.URL.revokeObjectURL(blobUrl);
+        }, 100);
+        return false;
+      } catch (error) {
+        console.error(&#39;Download failed:&#39;, error);
+        alert(&#39;Download failed. Please try again.&#39;);
+      }
+    }
+    downloadFile(event);
+  "><i class="fa fa-save"></i> Download the Markdown Cheat Sheet</button>
 </div>
 
 <!--radix_placeholder_site_after_body-->
