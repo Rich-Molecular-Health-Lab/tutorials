@@ -123,6 +123,23 @@ card(tagList(tags$pre(includeText("setup/header_default.txt"))))
 
 I use the `params` option for streamlining some automation across different scripts. You can use the sampleset setting under params in the header of this script to select which sampleset you will be working with. Everywhere in a chunk of code where I have written `params$sampleset` will be replaced with whichever strong you change your params value to in the header.
 
+### Sample Lists
+
+I also created a simple script containing lists of samplesets, subjects, and sequencing runs, to help with iterative programming functions.
+
+```{r, echo = FALSE, results='asis'}
+page_fluid(
+    accordion(
+      open = FALSE,
+      accordion_panel(
+        "Show/Hide `inputs_read_processing.R` File",
+        tagList(tags$pre(includeText("setup/inputs_read_processing.R")))
+    )
+  )
+)
+```
+
+
 ## File Paths and the `config` Package
 
 I also use `config` for streamlining and organization. If you want to do the same, you should create your own `config.yml` file in your project working directory. You can expand the content below to see what my example `config.yml` file looks like as well as the R script I use to integrate this with the `params` values for consistent file sourcing and writing across datasets.
@@ -143,22 +160,45 @@ page_fluid(
 )
 ```
 
-## Custom Engines
+## Terminal and Cat Engines
 
-I use custom language engines in some scripts that I named "terminal" and "bash". If you see a chunk of code with {terminal, warning = FALSE} written where you would usually see {r} at the top of the chunk, then running the chunk should only print that code as a text string in this document. This just makes it easier for me to copy and paste the code directly into the terminal panel that I use in my R Studio window when running code through a remote server instead of my local R console. There are ways to set R Studio up to run code through multiple servers, but I find this the simplest way to switch back and forth while still keeping a record of the code that have used or changes I have made to it.  
+I use different language engines in some scripts named `terminal` and `cat`. If you see a chunk of code with `{terminal}` or `{cat}` written where you would usually see {r} at the top of the chunk, then running the chunk will not tell your R console to process this in the usual R language.  
+
+- **`terminal`** chunks will echo the code in raw text format for easy copying and pasting into the terminal console. This just makes it easier for me to interact with other servers like Swan from my R Studio window. There are ways to set R Studio up to run code through multiple servers, but I find this the simplest way to switch back and forth while still keeping a record of the code that have used or changes I have made to it.
+
+<details>
+<summary>
+Expand to see the code I use to create the custom `terminal` language engine at the start of each script.
+</summary>
+
+```
+knitr::knit_engines$set(terminal = function(options) {
+  code <- paste(options$code, collapse = "\n")
   
-You can expand the content below to see the code that I run at the start of many of these scripts to initiate those language engines.
+  options$warning <- FALSE
+  knitr::engine_output(options, code, out = code)
+})
+```
 
-```{r, echo = FALSE}
-page_fluid(
-    accordion(
-      open = FALSE,
-      accordion_panel(
-        "knit_engines.R",
-        tagList(tags$pre(includeText("setup/knit_engines.R")))
-    )
-  )
-)
+</details>
+
+- **`cat`** chunks will write the text in that chunk directly into a file in this repository. I use this to streamline my batch scripts that I submit as jobs to the Swan cluster. This way, you only need to tweak the code in one location and rerun the chunk to ensure that update applies to all locations with working copies of the code.
+  - the `engine.opts=list(file='directory/script.sh')` string tells this chunk which directory and file to write the text to.
+  - adding `append=TRUE` to the string above tells the chunk that the text should be added to the bottom of the existing file. If this is not included, the text will overwrite anything already existing in a file at that location. Here is a complete example of what that chunk would look like:
+
+```
+{cat, engine.opts=list(file='subdirectory/script.sh')}
+  
+
+This would create a new file named `script.sh` with this text inside. If the file already exists, it will be replaced.
+```
+
+```
+{cat, engine.opts=list(file='subdirectory/script.sh', append=TRUE)}
+
+  
+  
+This chunk would add this text to the bottom of the file we just created and added the text to.
 ```
 
 

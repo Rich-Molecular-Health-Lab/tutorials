@@ -52,6 +52,8 @@ navbar:
       menu:
         - text: "HCC Remote Computing"
           href: firstuse_hcc.html
+        - text: "Primers and Barcodes"
+          href: primers_barcodes.html
         - text: "CONCOMPRA Read Processing Pipeline"
           href: firstuse_concompra.html
         - text: "Microeco R Package"

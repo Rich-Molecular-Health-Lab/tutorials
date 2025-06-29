@@ -1686,6 +1686,7 @@ First Use
 </button>
 <div class="nav-dropdown-content">
 <a href="firstuse_hcc.html">HCC Remote Computing</a>
+<a href="primers_barcodes.html">Primers and Barcodes</a>
 <a href="firstuse_concompra.html">CONCOMPRA Read Processing Pipeline</a>
 <a href="firstuse_microeco.html">Microeco R Package</a>
 </div>
@@ -1795,6 +1796,9 @@ First Use
       <a href="firstuse_hcc.html">HCC Remote Computing</a>
     </li>
     <li>
+      <a href="primers_barcodes.html">Primers and Barcodes</a>
+    </li>
+    <li>
       <a href="firstuse_concompra.html">CONCOMPRA Read Processing Pipeline</a>
     </li>
     <li>
@@ -1853,11 +1857,13 @@ Produced</a></li>
 <li><a href="#on-your-first-use-of-a-workflow" id="toc-on-your-first-use-of-a-workflow">On Your First-Use of a
 Workflow</a></li>
 <li><a href="#params-option-in-the-r-markdown-header" id="toc-params-option-in-the-r-markdown-header"><code>params</code>
-option in the R Markdown Header</a></li>
+option in the R Markdown Header</a>
+<ul>
+<li><a href="#sample-lists" id="toc-sample-lists">Sample Lists</a></li>
+</ul></li>
 <li><a href="#file-paths-and-the-config-package" id="toc-file-paths-and-the-config-package">File Paths and the
 <code>config</code> Package</a></li>
-<li><a href="#custom-engines" id="toc-custom-engines">Custom
-Engines</a></li>
+<li><a href="#terminal-and-cat-engines" id="toc-terminal-and-cat-engines">Terminal and Cat Engines</a></li>
 </ul></li>
 <li><a href="#markdown-syntax" id="toc-markdown-syntax">Markdown
 Syntax</a></li>
@@ -2074,6 +2080,81 @@ in the header of this script to select which sampleset you will be
 working with. Everywhere in a chunk of code where I have written
 <code>params$sampleset</code> will be replaced with whichever strong you
 change your params value to in the header.</p>
+<div id="sample-lists" class="section level3">
+<h3>Sample Lists</h3>
+<p>I also created a simple script containing lists of samplesets,
+subjects, and sequencing runs, to help with iterative programming
+functions.</p>
+<div class="container-fluid">
+<div id="bslib-accordion-9582" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
+<div class="accordion-item" data-value="Show/Hide `inputs_read_processing.R` File">
+<div class="accordion-header">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-9138" aria-expanded="false" aria-controls="bslib-accordion-panel-9138">
+<div class="accordion-icon"></div>
+<div class="accordion-title">Show/Hide `inputs_read_processing.R` File</div>
+</button>
+</div>
+<div id="bslib-accordion-panel-9138" class="accordion-collapse collapse">
+<div class="accordion-body">
+<pre>subjects &lt;- list(
+  marmoset = list(
+    HAM  = &quot;Hamlet&quot;,
+    HER  = &quot;Hera&quot;,
+    JAR  = &quot;JarJar BINKS&quot;,
+    OPH  = &quot;Ophelia&quot;,
+    KUB  = &quot;Kubo&quot;,
+    KOR  = &quot;Korra&quot;,
+    WOL  = &quot;Wolverine&quot;,
+    IRI  = &quot;Iris&quot;,
+    GOO  = &quot;Goose&quot;,
+    LAM  = &quot;Lambchop&quot;,
+    FRA  = &quot;Franc&quot;,
+    IVY  = &quot;Ivy&quot;,
+    CHA  = &quot;Charles&quot;,
+    PAD  = &quot;Padme&quot;,
+    BUB  = &quot;Bubblegum&quot;,
+    GRO  = &quot;Grogu&quot;,
+    MAR  = &quot;Marshmallow&quot;,
+    BUD  = &quot;Buddy&quot;,
+    JOA  = &quot;Joans&quot;,
+    HEN  = &quot;Henry&quot;,
+    GIN  = &quot;Ginger&quot;
+  ),
+  loris = list(
+    WARB = &quot;Warble&quot;,
+    CULI = &quot;Culi&quot;
+  ),
+  bats = list(
+    UNKN = &quot;Unknown&quot;,
+    EPFU = &quot;EPFU&quot;,
+    MYLE = &quot;MYLE&quot;,
+    LABO = &quot;LABO&quot;,
+    MYCI = &quot;MYCI&quot;,
+    LANO = &quot;LANO&quot;,
+    NYHU = &quot;NYHU&quot;
+  ),
+  envir = list(
+    UNK = &quot;Unknown&quot;
+  ),
+  isolates = list(
+    UNK = &quot;Unknown&quot;
+  )
+)
+
+
+seqruns &lt;- list(
+  loris     = as.list(c(paste0(&quot;hdz&quot;, 1:19))),
+  marmoset  = as.list(sprintf(&quot;cm%03d&quot;, 1:10)),
+  isolates  = as.list(paste0(&quot;salci&quot;, 1)),
+  bats      = as.list(paste0(&quot;nwr&quot;, 1))
+)
+</pre>
+</div>
+</div>
+</div>
+</div>
+</div>
+</div>
 </div>
 <div id="file-paths-and-the-config-package" class="section level2">
 <h2>File Paths and the <code>config</code> Package</h2>
@@ -2085,15 +2166,15 @@ file looks like as well as the R script I use to integrate this with the
 <code>params</code> values for consistent file sourcing and writing
 across datasets.</p>
 <div class="container-fluid">
-<div id="bslib-accordion-9640" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
+<div id="bslib-accordion-6890" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
 <div class="accordion-item" data-value="Show/Hide `config.yml` File">
 <div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-2742" aria-expanded="false" aria-controls="bslib-accordion-panel-2742">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-6465" aria-expanded="false" aria-controls="bslib-accordion-panel-6465">
 <div class="accordion-icon"></div>
 <div class="accordion-title">Show/Hide `config.yml` File</div>
 </button>
 </div>
-<div id="bslib-accordion-panel-2742" class="accordion-collapse collapse">
+<div id="bslib-accordion-panel-6465" class="accordion-collapse collapse">
 <div class="accordion-body">
 <pre>default:
   setup: &quot;setup/global/setup.R&quot;
@@ -2398,12 +2479,12 @@ methods_16s:
 </div>
 <div class="accordion-item" data-value="Show/Hide `config_paths.R` Script">
 <div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-8139" aria-expanded="false" aria-controls="bslib-accordion-panel-8139">
+<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-1890" aria-expanded="false" aria-controls="bslib-accordion-panel-1890">
 <div class="accordion-icon"></div>
 <div class="accordion-title">Show/Hide `config_paths.R` Script</div>
 </button>
 </div>
-<div id="bslib-accordion-panel-8139" class="accordion-collapse collapse">
+<div id="bslib-accordion-panel-1890" class="accordion-collapse collapse">
 <div class="accordion-body">
 <pre>global            &lt;- config::get(config = &quot;default&quot;)
 swan              &lt;- config::get(config = &quot;swan&quot;)
@@ -2426,88 +2507,61 @@ path         &lt;- config::get(config = paste0(params$sampleset))</pre>
 </div>
 </div>
 </div>
-<div id="custom-engines" class="section level2">
-<h2>Custom Engines</h2>
-<p>I use custom language engines in some scripts that I named “terminal”
-and “bash”. If you see a chunk of code with {terminal, warning = FALSE}
-written where you would usually see {r} at the top of the chunk, then
-running the chunk should only print that code as a text string in this
-document. This just makes it easier for me to copy and paste the code
-directly into the terminal panel that I use in my R Studio window when
-running code through a remote server instead of my local R console.
-There are ways to set R Studio up to run code through multiple servers,
-but I find this the simplest way to switch back and forth while still
-keeping a record of the code that have used or changes I have made to
-it.</p>
-<p>You can expand the content below to see the code that I run at the
-start of many of these scripts to initiate those language engines.</p>
-<div class="container-fluid">
-<div id="bslib-accordion-8295" class="accordion" data-require-bs-version="5" data-require-bs-caller="accordion()">
-<div class="accordion-item" data-value="knit_engines.R">
-<div class="accordion-header">
-<button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#bslib-accordion-panel-6456" aria-expanded="false" aria-controls="bslib-accordion-panel-6456">
-<div class="accordion-icon"></div>
-<div class="accordion-title">knit_engines.R</div>
-</button>
-</div>
-<div id="bslib-accordion-panel-6456" class="accordion-collapse collapse">
-<div class="accordion-body">
-<pre>knitr::knit_engines$set(terminal = function(options) {
+<div id="terminal-and-cat-engines" class="section level2">
+<h2>Terminal and Cat Engines</h2>
+<p>I use different language engines in some scripts named
+<code>terminal</code> and <code>cat</code>. If you see a chunk of code
+with <code>{terminal}</code> or <code>{cat}</code> written where you
+would usually see {r} at the top of the chunk, then running the chunk
+will not tell your R console to process this in the usual R
+language.</p>
+<ul>
+<li><strong><code>terminal</code></strong> chunks will echo the code in
+raw text format for easy copying and pasting into the terminal console.
+This just makes it easier for me to interact with other servers like
+Swan from my R Studio window. There are ways to set R Studio up to run
+code through multiple servers, but I find this the simplest way to
+switch back and forth while still keeping a record of the code that have
+used or changes I have made to it.</li>
+</ul>
+<details>
+<summary>
+Expand to see the code I use to create the custom <code>terminal</code>
+language engine at the start of each script.
+</summary>
+<pre><code>knitr::knit_engines$set(terminal = function(options) {
   code &lt;- paste(options$code, collapse = &quot;\n&quot;)
-  
-  params &lt;- map(params, ~ if (is.atomic(.)) {list(.)} else {(.)}) %&gt;%
-    list_flatten()
-  
-  patterns &lt;- list(
-    params             = list(
-      sampleset    = paste0(params$sampleset),
-      seqrun       = paste0(params$seqrun),
-      samplesheet  = as.character(sample_sheets[paste0(tolower(params$seqrun))])
-    )            ,
-    
-    global            = global            ,
-    path              = path              ,
-    swan              = swan              ,
-    micro             = micro             ,
-    loris             = loris             ,
-    isolates          = isolates          ,
-    bats              = bats              ,
-    methods_16s       = methods_16s       ,
-    sample_sheets     = sample_sheets     ,
-    abund_wf16s_files = abund_wf16s_files ,
-    barcode_alignments= barcode_alignments
-  )
-  
-  
-  # Replace placeholders group by group
-  for (group in names(patterns)) {
-    placeholder_list &lt;- patterns[[group]]
-    for (name in names(placeholder_list)) {
-      placeholder &lt;- paste(group, name, sep = &quot;\\$&quot;) # Match exact placeholder
-      value &lt;- placeholder_list[[name]]
-      
-      # Replace placeholders exactly and avoid breaking suffixes
-      code &lt;- gsub(placeholder, value, code, perl = TRUE)
-    }
-  }
   
   options$warning &lt;- FALSE
   knitr::engine_output(options, code, out = code)
-})
+})</code></pre>
+</details>
+<ul>
+<li><strong><code>cat</code></strong> chunks will write the text in that
+chunk directly into a file in this repository. I use this to streamline
+my batch scripts that I submit as jobs to the Swan cluster. This way,
+you only need to tweak the code in one location and rerun the chunk to
+ensure that update applies to all locations with working copies of the
+code.
+<ul>
+<li>the <code>engine.opts=list(file=&#39;directory/script.sh&#39;)</code> string
+tells this chunk which directory and file to write the text to.</li>
+<li>adding <code>append=TRUE</code> to the string above tells the chunk
+that the text should be added to the bottom of the existing file. If
+this is not included, the text will overwrite anything already existing
+in a file at that location. Here is a complete example of what that
+chunk would look like:</li>
+</ul></li>
+</ul>
+<pre><code>{cat, engine.opts=list(file=&#39;subdirectory/script.sh&#39;)}
+  
 
+This would create a new file named `script.sh` with this text inside. If the file already exists, it will be replaced.</code></pre>
+<pre><code>{cat, engine.opts=list(file=&#39;subdirectory/script.sh&#39;, append=TRUE)}
 
-knitr::opts_chunk$set(message = FALSE,
-               warning = FALSE,
-               echo    = TRUE,
-               include = TRUE,
-               eval    = TRUE,
-               comment = &quot;&quot;)
-</pre>
-</div>
-</div>
-</div>
-</div>
-</div>
+  
+  
+This chunk would add this text to the bottom of the file we just created and added the text to.</code></pre>
 </div>
 </div>
 <div id="markdown-syntax" class="section level1">
