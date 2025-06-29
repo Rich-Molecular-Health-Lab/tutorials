@@ -11,6 +11,7 @@ output:
       bslib: true
     toc: true
     toc_depth: 3
+    toc_float: true
     css: journal.css
 site: distill::distill_website
 
@@ -201,11 +202,16 @@ This would create a new file named `script.sh` with this text inside. If the fil
 This chunk would add this text to the bottom of the file we just created and added the text to.
 ```
 
+# R Studio and R Markdown Basics
 
+Once you gain fluency in R and github, it becomes very easy to adapt just about any project, document, or task to an automated, easily transferrable format with streamlined version control through R Studio and R Markdown. The following two online textbooks are the best place to start if you are new to R Markdown (I still refer back to these constantly for different tips and tricks).
 
-# Markdown Syntax
+- [**R Markdown Cookbook**](https://bookdown.org/yihui/rmarkdown-cookbook/)
+- [**R Markdown: The Definitive Guide**](https://bookdown.org/yihui/rmarkdown/)
 
-Download the following cheatsheet from [The Markdown Guide](https://www.markdownguide.org) for handy inline syntax when composing R Markdown files like those used in my tutorials.
+## Markdown Syntax
+
+I also recommend downloading the following cheatsheet from [The Markdown Guide](https://www.markdownguide.org) for handy inline syntax when composing R Markdown files like those used in my tutorials.
 
 ```{r, echo = FALSE}
 download_file(
@@ -219,5 +225,7 @@ download_file(
 )
 ```
 
+## Other Cheatsheets
 
+[This page also contains a list of _very helpful_ cheatsheets for other packages or purposes in R Studio.](https://posit.co/resources/cheatsheets/) Refer back to this often, as you may find some of these more useful the more fluent you become in R.
 
