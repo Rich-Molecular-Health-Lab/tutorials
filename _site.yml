@@ -30,13 +30,15 @@ navbar:
           href: AdaptiveSamplingDatabase_mtDNALoris.html
     - text: "Read Processing"
       menu:
-        - text: "Multiplex 16S"
+        - text: "16S via EPI2ME Labs"
           href: readprocessing_multiplex_16s.html
-        - text: "Multiplex Adaptive Sampling"
+        - text: "16S via PRONAME"
           href: 
-        - text: "Singleplex Adaptive Sampling"
+        - text: "Adaptive Sampling: Multiplex"
           href: 
-        - text: "Singleplex Whole Genome"
+        - text: "Adaptive Sampling: Singleplex"
+          href: 
+        - text: "Genome Skim: Singleplex"
           href: readprocessing_singleplex_wg.html
     - text: "Microbiome Data"
       menu:
@@ -54,8 +56,8 @@ navbar:
           href: firstuse_hcc.html
         - text: "Primers and Barcodes"
           href: primers_barcodes.html
-        - text: "CONCOMPRA Read Processing Pipeline"
-          href: firstuse_concompra.html
+        - text: "PRONAME Read Processing Pipeline"
+          href: firstuse_proname.html
         - text: "Microeco R Package"
           href: firstuse_microeco.html
 output:
