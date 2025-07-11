@@ -1,5 +1,5 @@
 ---
-title: "Bioinformatics and Stats Tutorials"
+title: "Computational Tutorials"
 authors:
   - name: "Alicia M. Rich, Ph.D."
     affiliation: "Rich Lab, University of Nebraska Omaha"
@@ -29,10 +29,230 @@ library(tidyverse)
 library(bslib)
 library(htmltools)
 library(downloadthis)
+library(htmlwidgets)
+library(collapsibleTree)
 ```
 
 
-This repository contains the scripts, tutorials, and templates for the Rich Lab's mainstream bioinformatic workflows. You can find some of the current recommended tutorial versions of these workflows linked below.
+This repository is designed to help Rich Lab trainees navigate the full data journey—from the bench to publication—using our structured R Markdown pipelines. Whether you’re working with microbiome amplicons, whole genome sequences, or targeted mitochondrial datasets, your workflow will generally follow a core sequence: **sample tracking → read processing → metadata integration → statistical analysis and visualization**. Each step has dedicated scripts in either the read_processing or bioinformatics_stats repositories, which you’ll move through depending on your data type and project goals.
+
+# Getting Started
+
+Begin with the `sample_inventory` script to document your samples and lab steps. Then select the appropriate `read_processing_*` script to clean, organize, and interpret your raw sequencing reads. After (or during) read processing, use the `metadata_setup` script to link your sequencing output with experimental or phenotypic metadata. Finally, explore the `bioinformatics_stats` repository's suite of analysis scripts—ranging from diversity metrics to phylogenetics—to extract biological meaning and prepare publication-quality figures. First-use versions of many scripts are provided to help you install environments and prepare references the first time you run a given workflow.
+
+>**Remember...** you don’t need to master everything at once. Just consult the flow chart, select a starting tutorial script, and download its R Markdown template file using the `code` option in the upper righthand corner. Start editing the file and running chunks from your interface. Keep a chatbot handy for troubleshooting help and bring your questions or hangups to the next lab meeting. Finally, remember, ***everyone felt this lost when they first tried to make sense of coding.***  The best way to become proficient at coding is by stumbling through some painstaking trial-and-error until the patterns start to become clear.
+
+# Current Library Prep Pipelines
+
+```{r, echo=FALSE}
+kits <- tibble(
+  kit_prefix = c(
+    "SQK",
+    "SQK",
+    "SQK",
+    "SQK"
+  ),
+  kit = c(
+    "LSK",
+    "RAD",
+    "16S",
+    "RBK"
+  ),
+  kit_chem = c(
+    "114",
+    "114",
+    "114",
+    "114"
+  ),
+  kit_name = c(
+    "Ligation Sequencing Kit",
+    "Rapid Sequencing Kit",
+    "16S Barcoding Kit",
+    "Rapid Barcoding Kit"
+  ),
+  rapid = c(
+    "no",
+    "yes",
+    "yes",
+    "yes"
+  ),
+  pcr = c(
+    "no",
+    "no",
+    "yes",
+    "no"
+  ),
+  multiplex = c(
+    "no",
+    "no",
+    "yes",
+    "yes"
+  ),
+  fragmentation = c(
+    "no",
+    "yes",
+    "yes",
+    "yes"
+  ),
+  ng = c(
+    1000,
+    100,
+    10,
+    200
+  ),
+  extract_ul = c(
+    47,
+    10,
+    15,
+    10
+  ),
+  nplex = c(
+    1,
+    1,
+    24,
+    24
+  )
+)
+
+pipelines <- tibble(
+  goal = c(
+    "Characterize unknown microbial isolate",
+    "High-quality phylogenetic profile",
+    "Noninvasive population history",
+    "Microbiome Profiling",
+    "Endangered species monitoring"
+  ),
+  sample = c(
+    "Liquid Cultures",
+    "Blood or Tissue",
+    "Feces",
+    "Feces",
+    "Trace eDNA"
+  ),
+  target = c(
+    "Whole Genome",
+    "Mitochondrial Genome",
+    "Mitochondrial Genome",
+    "Metabarcoding rRNA Genes",
+    "Metabarcoding Mitochondrial Genomes"
+  ),
+  references = c(
+    "Optional (de novo works)",
+    "Custom Build via NCBI",
+    "Custom Build via NCBI",
+    "NCBI 16S, SILVA, GreenGenes, etc.",
+    "Custom Build via NCBI"
+  ),
+  LSK   = c(
+    "yes",
+    "yes",
+    "maybe",
+    "no",
+    "maybe"
+  ),
+  RAD   = c(
+    "maybe",
+    "yes",
+    "maybe",
+    "no",
+    "maybe"
+  ),
+  "16S" = c(
+    "no",
+    "no",
+    "no",
+    "yes",
+    "no"
+  ),
+  RBK   = c(
+    "maybe",
+    "maybe",
+    "maybe",
+    "yes",
+    "yes"
+  )
+)
+
+workflows <- tibble(
+  goal = c(
+    "Characterize unknown microbial isolate",
+    "High-quality phylogenetic profile",
+    "Noninvasive population history",
+    "Microbiome Profiling",
+    "Endangered species monitoring"
+  ),
+  before_seq = c(
+    "none",
+    "adaptive_sampling",
+    "adaptive_sampling",
+    "none",
+    "adaptive_sampling"
+  ),
+  sample_inventory = c(
+    "collection, extraction, libprep, compilation",
+    "collection, extraction, libprep, compilation",
+    "collection, extraction, libprep, compilation",
+    "collection, extraction, libprep, compilation",
+    "collection, extraction, libprep, compilation"
+  ),
+  read_processing = c(
+    "readprocessing_isolates",
+    "readprocessing_mtgenome_phylo",
+    "readprocessing_mtgenome_pophist",
+    "readprocessing_16s",
+    "readprocessing_mteDNA"
+  )
+) %>%
+  left_join(pipelines, by = "goal") %>%
+  pivot_longer(c("LSK", "RAD", "16S", "RBK"), names_to = "kit", values_to = "preferred") %>%
+  filter(preferred == "yes") %>%
+  select(-preferred) %>%
+  left_join(kits, by = "kit") %>%
+  rowwise() %>%
+  mutate(min_ng_ul = ng/extract_ul) %>%
+  ungroup()
+
+```
+
+
+## Singleplex
+
+*Single sample per flow cell/sequencing run (no barcoding).*
+
+### Whole Genome Skimming/Sequencing
+
+*Whole bacterial genomes from microbial isolates.*
+
+#### Ligation Sequencing Kit V14 (SQK-LSK114)
+
+### Adaptive Sampling (Targeted Sequencing)
+
+*Whole mitochondrial genomes*
+
+#### Ligation Sequencing Kit V14 (SQK-LSK114)
+
+*Best with single-taxon samples where we manage concentrations of at least 1000 ng of DNA per 47 \u03bcL of purified extract.*
+
+#### Rapid Sequencing Kit V14 (SQK-RAD114)
+
+*Better option for balancing more degraded samples with deeper read counts or replicates per sample (e.g., generating whole mtDNA genomes while conserving extract volume to characterize population history). Still requires at least 100 ng of DNA per 10 \u03bcL of purified extract.*
+
+## Multiplex
+
+*Multiple samples prepped with unique barcode attached to libraries before pooling into single sequencing run.*
+
+### PCR Amplification
+
+#### 16S Barcoding Kit 24 V14 (SQK-16S114.24)
+
+*Sequencing the full-length 16S gene for microbiome profiling (24 samples pooled per run)*
+
+### Adaptive Sampling (PCR-free)
+
+#### Rapid Barcoding Kit 24 V14 (SQK-RBK114.24)
+
+*Our current preferred option for eDNA metabarcoding method of endangered species monitoring - we usually combine this with adaptive sampling to enrich mtDNA reads without introducing PCR bias/contamination during the library prep process.*
+
 
 # Tutorial Options
 
